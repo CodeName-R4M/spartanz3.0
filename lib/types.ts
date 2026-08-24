@@ -1,141 +1,190 @@
-export type Role = "user" | "admin"
+// ---------------------------------------------------------------------------
+// SPARTANZ 3.0 — domain types.
+//
+// These are the camelCase shapes the whole app speaks. Postgres rows are
+// snake_case; lib/supabase/mappers.ts is the only place that translates between
+// the two, so no page, component or action ever has to know which storage mode
+// (Supabase or the local JSON store) is active.
+// ---------------------------------------------------------------------------
 
-export type RegistrationStatus = "REGISTERED" | "CONFIRMED" | "CANCELLED" | "ATTENDED"
+export type Role = 'user' | 'admin'
 
-export type EventStatus = "active" | "draft" | "closed"
+/** Lifecycle of a participant's registration. Lowercase to match the DB enum. */
+export const REGISTRATION_STATUSES = [
+  'registered',
+  'confirmed',
+  'attended',
+  'cancelled',
+] as const
 
-export interface AppUser {
+export type RegistrationStatus = (typeof REGISTRATION_STATUSES)[number]
+
+/** An event is either open for registration or hidden from the public site. */
+export type EventStatus = 'active' | 'disabled'
+
+/** The fixed groups the team page renders, in display order. */
+export const TEAM_CATEGORIES = [
+  { slug: 'faculty-coordinators', label: 'Faculty Coordinators' },
+  { slug: 'organizing-committee', label: 'Organizing Committee' },
+  { slug: 'event-coordinators', label: 'Event Coordinators' },
+  { slug: 'technical-team', label: 'Technical Team' },
+  { slug: 'design-team', label: 'Design Team' },
+  { slug: 'media-team', label: 'Media Team' },
+  { slug: 'hospitality-team', label: 'Hospitality Team' },
+  { slug: 'registration-team', label: 'Registration Team' },
+] as const
+
+export type TeamCategorySlug = (typeof TEAM_CATEGORIES)[number]['slug']
+
+export const YEARS = [
+  'First Year',
+  'Second Year',
+  'Third Year',
+  'Final Year',
+  'PG / Other',
+] as const
+
+// ------------------------------- users -------------------------------------
+export interface User {
   id: string
+  name: string
   email: string
-  full_name: string | null
-  avatar_url: string | null
-  phone: string | null
-  college: string | null
-  department: string | null
-  year: string | null
+  avatarUrl?: string
+  phone?: string
+  college?: string
+  department?: string
+  year?: string
   role: Role
-  created_at: string
-  registration_count?: number
+  createdAt: string
 }
 
+// ----------------------------- categories ----------------------------------
 export interface EventCategory {
   id: string
   name: string
   slug: string
-  description: string | null
   active: boolean
-  display_order: number
-  created_at?: string
-  event_count?: number
+  displayOrder: number
+  createdAt: string
+  updatedAt: string
 }
 
-export interface SymposiumEvent {
+// ------------------------------- events ------------------------------------
+export interface TeamSize {
+  min: number
+  max: number
+}
+
+export interface EventCoordinator {
+  name: string
+  phone: string
+}
+
+export interface EventItem {
   id: string
   name: string
   slug: string
-  category_id: string | null
-  category_name: string | null
-  category_slug: string | null
-  short_description: string
+  /** Matches EventCategory.slug. */
+  category: string
+  shortDescription: string
   description: string
   rules: string[]
-  image_url: string | null
-  gif_url: string | null
-  event_date: string
-  start_time: string
-  end_time: string
+  image: string
+  gif?: string
+  /** Human-readable date shown on cards, e.g. "March 14, 2026". */
+  date: string
+  startTime: string
+  endTime: string
   venue: string
-  min_team_size: number
-  max_team_size: number
-  registration_fee: number
+  teamSize: TeamSize
+  registrationFee: number
   prizes: string
-  coordinator_name: string
-  coordinator_phone: string
+  coordinator: EventCoordinator
   status: EventStatus
-  featured: boolean
-  display_order: number
-  created_at: string
-  updated_at: string
-  registration_count?: number
+  displayOrder: number
+  createdAt: string
+  updatedAt: string
 }
 
+// ---------------------------- registrations --------------------------------
 export interface RegistrationMember {
-  id?: string
   name: string
-  email?: string | null
-  phone?: string | null
+  email?: string
 }
 
 export interface Registration {
   id: string
-  reference_code: string
-  user_id: string
-  event_id: string
-  full_name: string
+  userId: string
+  eventId: string
+  fullName: string
   email: string
   phone: string
   college: string
   department: string
   year: string
-  team_name: string | null
+  teamName?: string
+  members: RegistrationMember[]
   status: RegistrationStatus
-  created_at: string
-  event_name?: string
-  event_category?: string
-  members?: RegistrationMember[]
+  createdAt: string
 }
 
+// ------------------------------ team roster --------------------------------
 export interface TeamMember {
   id: string
   name: string
   role: string
-  category: string
-  photo_url: string | null
-  short_bio: string | null
-  department: string | null
-  year: string | null
-  display_order: number
+  category: TeamCategorySlug
+  photo: string
+  shortBio?: string
+  department?: string
+  year?: string
+  displayOrder: number
   active: boolean
-  created_at?: string
+  createdAt: string
+  updatedAt: string
 }
 
+// ------------------------------- messages ----------------------------------
 export interface ContactMessage {
   id: string
   name: string
   email: string
   subject: string
   message: string
-  handled: boolean
-  created_at: string
+  read: boolean
+  createdAt: string
+}
+
+// -------------------------------- audit ------------------------------------
+export interface AuditLog {
+  id: string
+  actorEmail: string
+  action: string
+  target: string
+  createdAt: string
+}
+
+// ------------------------------- settings ----------------------------------
+export interface SocialLink {
+  label: string
+  url: string
 }
 
 export interface SiteSettings {
-  id: string
-  symposium_name: string
+  symposiumName: string
   subtitle: string
-  college_name: string
-  department_name: string
-  club_name: string
-  event_date: string
+  college: string
+  department: string
+  club: string
+  theme: string
+  /** Display date, e.g. "March 14, 2026". */
+  date: string
   venue: string
-  contact_email: string
-  contact_phone: string
-  instagram_url: string | null
-  linkedin_url: string | null
-  github_url: string | null
-  youtube_url: string | null
-  hero_headline: string
-  hero_subline: string
-  countdown_target: string
-  registration_open: boolean
-  updated_at?: string
-}
-
-export interface AuditLog {
-  id: string
-  actor_email: string
-  action: string
-  target: string | null
-  details: string | null
-  created_at: string
+  contactEmail: string
+  phone: string
+  socials: SocialLink[]
+  heroTagline: string
+  /** ISO timestamp the hero countdown ticks down to. */
+  countdownDate: string
+  registrationOpen: boolean
 }
