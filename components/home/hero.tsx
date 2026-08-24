@@ -47,10 +47,10 @@ export function Hero({ settings }: { settings: SiteSettings }) {
 
           <Reveal delay={140}>
             <p className="mt-5 max-w-xl font-display text-sm uppercase tracking-[0.2em] text-muted-foreground">
-              {settings.hero_headline}
+              {settings.heroTagline}
             </p>
             <p className="mt-4 max-w-xl text-base leading-relaxed text-foreground/85 text-pretty sm:text-lg">
-              {settings.hero_subline}
+              {settings.heroSubline}
             </p>
           </Reveal>
 
@@ -72,7 +72,7 @@ export function Hero({ settings }: { settings: SiteSettings }) {
           </Reveal>
 
           <Reveal delay={260} className="mt-10 flex flex-col gap-5">
-            <Countdown target={settings.countdown_target} className="max-w-md" />
+            <Countdown target={settings.countdownDate} className="max-w-md" />
             <ul className="flex flex-col gap-2.5 sm:flex-row sm:gap-6">
               <li className="flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.16em] text-muted-foreground">
                 <CalendarDays className="size-3.5 text-primary" aria-hidden="true" />

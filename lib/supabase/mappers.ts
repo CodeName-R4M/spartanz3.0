@@ -73,6 +73,7 @@ export function toEvent(r: any): EventItem {
       phone: r.coordinator_phone ?? '',
     },
     status: r.status === 'disabled' ? 'disabled' : 'active',
+    featured: r.featured ?? false,
     displayOrder: r.display_order ?? 99,
     createdAt: r.created_at,
     updatedAt: r.updated_at,
@@ -100,6 +101,7 @@ export function fromEvent(e: EventItem) {
     coordinator_name: e.coordinator.name,
     coordinator_phone: e.coordinator.phone,
     status: e.status,
+    featured: e.featured ?? false,
     display_order: e.displayOrder,
     updated_at: new Date().toISOString(),
   }
@@ -194,6 +196,7 @@ export function toSettings(r: any): SiteSettings {
     phone: r.phone ?? '',
     socials: r.socials ?? [],
     heroTagline: r.hero_tagline ?? '',
+    heroSubline: r.hero_subline ?? undefined,
     countdownDate: r.countdown_date ?? '',
     registrationOpen: r.registration_open,
   }
@@ -213,6 +216,7 @@ export function fromSettings(s: SiteSettings) {
     phone: s.phone,
     socials: s.socials,
     hero_tagline: s.heroTagline,
+    hero_subline: s.heroSubline ?? null,
     countdown_date: s.countdownDate,
     registration_open: s.registrationOpen,
     updated_at: new Date().toISOString(),

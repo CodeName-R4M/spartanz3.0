@@ -11,7 +11,14 @@ function Dialog({ ...props }: DialogPrimitive.Root.Props) {
   return <DialogPrimitive.Root data-slot="dialog" {...props} />
 }
 
-function DialogTrigger({ ...props }: DialogPrimitive.Trigger.Props) {
+function DialogTrigger({ asChild, ...props }: DialogPrimitive.Trigger.Props & { asChild?: boolean }) {
+  if (asChild && React.isValidElement(props.children)) {
+    const child = React.Children.only(props.children) as React.ReactElement<any>
+    return React.cloneElement(child, {
+      className: cn(child.props.className),
+      "data-slot": "dialog-trigger",
+    })
+  }
   return <DialogPrimitive.Trigger data-slot="dialog-trigger" {...props} />
 }
 
@@ -19,7 +26,14 @@ function DialogPortal({ ...props }: DialogPrimitive.Portal.Props) {
   return <DialogPrimitive.Portal data-slot="dialog-portal" {...props} />
 }
 
-function DialogClose({ ...props }: DialogPrimitive.Close.Props) {
+function DialogClose({ asChild, ...props }: DialogPrimitive.Close.Props & { asChild?: boolean }) {
+  if (asChild && React.isValidElement(props.children)) {
+    const child = React.Children.only(props.children) as React.ReactElement<any>
+    return React.cloneElement(child, {
+      className: cn(child.props.className),
+      "data-slot": "dialog-close",
+    })
+  }
   return <DialogPrimitive.Close data-slot="dialog-close" {...props} />
 }
 

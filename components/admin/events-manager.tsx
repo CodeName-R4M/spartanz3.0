@@ -37,7 +37,9 @@ import { ConfirmDelete } from '@/components/admin/confirm-delete'
 import { deleteEvent, upsertEvent } from '@/app/actions/admin'
 import type { EventCategory, EventItem } from '@/lib/types'
 
-const EMPTY: Partial<EventItem> = {
+type DraftShape = Partial<EventItem & { rulesText: string }>
+
+const EMPTY: DraftShape = {
   name: '',
   category: '',
   shortDescription: '',
@@ -62,7 +64,7 @@ export function EventsManager({
   categories: EventCategory[]
 }) {
   const [open, setOpen] = useState(false)
-  const [draft, setDraft] = useState<Partial<EventItem>>(EMPTY)
+  const [draft, setDraft] = useState<DraftShape>(EMPTY)
   const [pending, startTransition] = useTransition()
 
   function openNew() {
@@ -205,7 +207,7 @@ export function EventsManager({
             <Field label="Category">
               <Select
                 value={draft.category}
-                onValueChange={(v) => setDraft((d) => ({ ...d, category: v }))}
+                onValueChange={(v) => setDraft((d) => ({ ...d, category: v ?? '' }))}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select" />
@@ -250,7 +252,7 @@ export function EventsManager({
                 defaultValue={(draft.rules ?? []).join('\n')}
                 onChange={(e) =>
                   setDraft((d) => ({
-                    ...(d as object),
+                    ...d,
                     rulesText: e.target.value,
                   }))
                 }

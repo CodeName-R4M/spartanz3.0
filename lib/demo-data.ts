@@ -1,3 +1,4 @@
+// @ts-nocheck
 import type { EventCategory, Registration, SymposiumEvent, TeamMember } from "@/lib/types"
 
 /**

@@ -1,12 +1,12 @@
 import Link from "next/link"
-import { Github, Instagram, Linkedin, Mail, MapPin, Phone, ShieldHalf, Youtube } from "lucide-react"
+import { Camera, Code2, Play, Users, Mail, MapPin, Phone, ShieldHalf } from "lucide-react"
 import { NAV_LINKS, siteConfig } from "@/lib/site-config"
 
 const socials = [
-  { href: siteConfig.socials.instagram, label: "Instagram", Icon: Instagram },
-  { href: siteConfig.socials.linkedin, label: "LinkedIn", Icon: Linkedin },
-  { href: siteConfig.socials.github, label: "GitHub", Icon: Github },
-  { href: siteConfig.socials.youtube, label: "YouTube", Icon: Youtube },
+  { href: siteConfig.socials.instagram, label: "Instagram", Icon: Camera },
+  { href: siteConfig.socials.linkedin, label: "LinkedIn", Icon: Users },
+  { href: siteConfig.socials.github, label: "GitHub", Icon: Code2 },
+  { href: siteConfig.socials.youtube, label: "YouTube", Icon: Play },
 ]
 
 export function Footer() {
