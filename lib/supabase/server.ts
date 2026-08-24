@@ -1,39 +1,27 @@
-import 'server-only'
-
-import { cookies } from 'next/headers'
-import { createServerClient } from '@supabase/ssr'
-import { createClient as createSupabaseClient } from '@supabase/supabase-js'
-import { SUPABASE_ANON_KEY, SUPABASE_URL, isSupabaseEnabled } from './config'
+import { cookies } from "next/headers"
+import { createServerClient } from "@supabase/ssr"
+import { createClient } from "@supabase/supabase-js"
+import { SUPABASE_ANON_KEY, SUPABASE_URL, getServiceRoleKey, isSupabaseConfigured } from "./env"
 
 /**
- * Request-scoped Supabase client that reads and refreshes the auth cookies.
- * Use this for anything that should respect row level security.
- *
- * In Next.js 16 `cookies()` is async, so this helper is async too.
+ * Request-scoped client that respects Row Level Security and the signed-in user.
+ * Returns null in demo mode (template env keys).
  */
-export async function createClient() {
-  if (!isSupabaseEnabled()) {
-    throw new Error(
-      'Supabase is not configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in .env.local (see .env.example).',
-    )
-  }
-
+export async function getSupabaseServerClient() {
+  if (!isSupabaseConfigured) return null
   const cookieStore = await cookies()
 
-  return createServerClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  return createServerClient(SUPABASE_URL as string, SUPABASE_ANON_KEY as string, {
     cookies: {
       getAll() {
         return cookieStore.getAll()
       },
       setAll(cookiesToSet) {
         try {
-          for (const { name, value, options } of cookiesToSet) {
-            cookieStore.set(name, value, options)
-          }
+          cookiesToSet.forEach(({ name, value, options }) => cookieStore.set(name, value, options))
         } catch {
-          // Called from a Server Component render, where cookies are
-          // read-only. The proxy refreshes the session instead, so this is
-          // safe to swallow.
+          // Called from a Server Component render — safe to ignore, the
+          // proxy/middleware refreshes the session cookie instead.
         }
       },
     },
@@ -41,18 +29,14 @@ export async function createClient() {
 }
 
 /**
- * Admin client using the service role key. This BYPASSES row level security,
- * so it must never be imported into a Client Component, and every caller is
- * responsible for its own authorization check (see requireAdmin()).
+ * SERVICE ROLE client. Bypasses RLS — never import this into a Client
+ * Component and never return raw results to the browser without an
+ * explicit `requireAdmin()` check first.
  */
-export function createAdminClient() {
-  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
-  if (!isSupabaseEnabled() || !serviceKey) {
-    throw new Error(
-      'Supabase service role is not configured. Set SUPABASE_SERVICE_ROLE_KEY in .env.local (see .env.example).',
-    )
-  }
-  return createSupabaseClient(SUPABASE_URL, serviceKey, {
+export function getSupabaseAdminClient() {
+  const key = getServiceRoleKey()
+  if (!isSupabaseConfigured || !key) return null
+  return createClient(SUPABASE_URL as string, key, {
     auth: { persistSession: false, autoRefreshToken: false },
   })
 }

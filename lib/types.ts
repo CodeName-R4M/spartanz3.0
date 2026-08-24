@@ -1,108 +1,102 @@
-// Domain types for SPARTANZ 3.0. These mirror the intended Supabase schema
-// (tables: users, events, event_categories, registrations,
-// registration_members, team_members, contact_messages,
-// admin_audit_logs, site_settings) so swapping in Supabase is a drop-in.
+export type Role = "user" | "admin"
 
-export type UserRole = 'user' | 'admin'
+export type RegistrationStatus = "REGISTERED" | "CONFIRMED" | "CANCELLED" | "ATTENDED"
 
-export interface User {
+export type EventStatus = "active" | "draft" | "closed"
+
+export interface AppUser {
   id: string
-  name: string
   email: string
-  avatarUrl?: string
-  college?: string
-  role: UserRole
-  createdAt: string
+  full_name: string | null
+  avatar_url: string | null
+  phone: string | null
+  college: string | null
+  department: string | null
+  year: string | null
+  role: Role
+  created_at: string
+  registration_count?: number
 }
-
-export type EventCategorySlug = string
 
 export interface EventCategory {
   id: string
   name: string
-  slug: EventCategorySlug
+  slug: string
+  description: string | null
   active: boolean
-  displayOrder: number
-  createdAt: string
-  updatedAt: string
+  display_order: number
+  created_at?: string
+  event_count?: number
 }
 
-export type EventStatus = 'active' | 'disabled'
-
-export interface EventItem {
+export interface SymposiumEvent {
   id: string
   name: string
   slug: string
-  category: EventCategorySlug
-  shortDescription: string
+  category_id: string | null
+  category_name: string | null
+  category_slug: string | null
+  short_description: string
   description: string
   rules: string[]
-  image: string
-  gif?: string
-  date: string
-  startTime: string
-  endTime: string
+  image_url: string | null
+  gif_url: string | null
+  event_date: string
+  start_time: string
+  end_time: string
   venue: string
-  teamSize: { min: number; max: number }
-  registrationFee: number
+  min_team_size: number
+  max_team_size: number
+  registration_fee: number
   prizes: string
-  coordinator: { name: string; phone: string }
+  coordinator_name: string
+  coordinator_phone: string
   status: EventStatus
-  displayOrder: number
-  createdAt: string
-  updatedAt: string
+  featured: boolean
+  display_order: number
+  created_at: string
+  updated_at: string
+  registration_count?: number
 }
 
-export type RegistrationStatus =
-  | 'registered'
-  | 'confirmed'
-  | 'cancelled'
-  | 'attended'
-
 export interface RegistrationMember {
+  id?: string
   name: string
-  email?: string
+  email?: string | null
+  phone?: string | null
 }
 
 export interface Registration {
   id: string
-  userId: string
-  eventId: string
-  fullName: string
+  reference_code: string
+  user_id: string
+  event_id: string
+  full_name: string
   email: string
   phone: string
   college: string
   department: string
   year: string
-  teamName?: string
-  members: RegistrationMember[]
+  team_name: string | null
   status: RegistrationStatus
-  createdAt: string
+  created_at: string
+  event_name?: string
+  event_category?: string
+  members?: RegistrationMember[]
 }
-
-export type TeamCategorySlug =
-  | 'faculty-coordinators'
-  | 'organizing-committee'
-  | 'event-coordinators'
-  | 'technical-team'
-  | 'design-team'
-  | 'media-team'
-  | 'hospitality-team'
-  | 'registration-team'
 
 export interface TeamMember {
   id: string
   name: string
   role: string
-  category: TeamCategorySlug
-  photo: string
-  shortBio?: string
-  department?: string
-  year?: string
-  displayOrder: number
+  category: string
+  photo_url: string | null
+  short_bio: string | null
+  department: string | null
+  year: string | null
+  display_order: number
   active: boolean
-  createdAt: string
-  updatedAt: string
+  created_at?: string
 }
 
 export interface ContactMessage {
@@ -111,49 +105,37 @@ export interface ContactMessage {
   email: string
   subject: string
   message: string
-  createdAt: string
-  read: boolean
+  handled: boolean
+  created_at: string
+}
+
+export interface SiteSettings {
+  id: string
+  symposium_name: string
+  subtitle: string
+  college_name: string
+  department_name: string
+  club_name: string
+  event_date: string
+  venue: string
+  contact_email: string
+  contact_phone: string
+  instagram_url: string | null
+  linkedin_url: string | null
+  github_url: string | null
+  youtube_url: string | null
+  hero_headline: string
+  hero_subline: string
+  countdown_target: string
+  registration_open: boolean
+  updated_at?: string
 }
 
 export interface AuditLog {
   id: string
-  actorEmail: string
+  actor_email: string
   action: string
-  target: string
-  createdAt: string
+  target: string | null
+  details: string | null
+  created_at: string
 }
-
-export interface SiteSettings {
-  symposiumName: string
-  subtitle: string
-  college: string
-  department: string
-  club: string
-  theme: string
-  date: string
-  venue: string
-  contactEmail: string
-  phone: string
-  socials: { label: string; url: string }[]
-  heroTagline: string
-  countdownDate: string
-  registrationOpen: boolean
-}
-
-export const TEAM_CATEGORIES: { slug: TeamCategorySlug; label: string }[] = [
-  { slug: 'faculty-coordinators', label: 'Faculty Coordinators' },
-  { slug: 'organizing-committee', label: 'Organizing Committee' },
-  { slug: 'event-coordinators', label: 'Event Coordinators' },
-  { slug: 'technical-team', label: 'Technical Team' },
-  { slug: 'design-team', label: 'Design Team' },
-  { slug: 'media-team', label: 'Media Team' },
-  { slug: 'hospitality-team', label: 'Hospitality Team' },
-  { slug: 'registration-team', label: 'Registration Team' },
-]
-
-export const REGISTRATION_STATUSES: RegistrationStatus[] = [
-  'registered',
-  'confirmed',
-  'cancelled',
-  'attended',
-]

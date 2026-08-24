@@ -1,21 +1,17 @@
-'use client'
+"use client"
 
-import { createBrowserClient } from '@supabase/ssr'
-import { SUPABASE_ANON_KEY, SUPABASE_URL, isSupabaseEnabled } from './config'
-
-// Browser Supabase client. Only ever uses the public anon key, so every query
-// it makes is subject to the row level security policies in scripts/schema.sql.
+import { createBrowserClient } from "@supabase/ssr"
+import { SUPABASE_ANON_KEY, SUPABASE_URL, isSupabaseConfigured } from "./env"
 
 let cached: ReturnType<typeof createBrowserClient> | null = null
 
-export function createClient() {
-  if (!isSupabaseEnabled()) {
-    throw new Error(
-      'Supabase is not configured. Set NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in .env.local (see .env.example).',
-    )
-  }
+/** Returns null when Supabase env keys are still placeholders (demo mode). */
+export function getSupabaseBrowserClient() {
+  if (!isSupabaseConfigured) return null
   if (!cached) {
-    cached = createBrowserClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+    cached = createBrowserClient(SUPABASE_URL as string, SUPABASE_ANON_KEY as string)
   }
   return cached
 }
+
+export { isSupabaseConfigured }

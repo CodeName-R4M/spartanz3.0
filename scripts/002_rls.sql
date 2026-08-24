@@ -1,214 +1,178 @@
--- ===========================================================================
--- SPARTANZ 3.0 — row level security
---
--- Run AFTER 001_schema.sql.
+-- ============================================================
+-- SPARTANZ 3.0 — 002 ROW LEVEL SECURITY
+-- Run AFTER 001_schema.sql. Safe to re-run.
 --
 -- Model:
---   * Public content (events, categories, active team members) is readable
---     by anyone, signed in or not.
---   * A participant can only ever see and create their OWN registrations.
---   * Everything destructive, and every cross-user read, requires is_admin().
---   * Nothing is writable by anonymous visitors except a contact message.
--- ===========================================================================
+--   * Public/anon can READ published content (events, categories, team).
+--   * A signed-in user can read and write ONLY their own profile and
+--     their own registrations.
+--   * Admins (profiles.role = 'admin') can do everything.
+--   * Nobody can escalate their own role — enforced by a dedicated
+--     policy check on public.profiles.
+-- ============================================================
 
-alter table public.users                enable row level security;
-alter table public.event_categories     enable row level security;
-alter table public.events               enable row level security;
-alter table public.registrations        enable row level security;
+alter table public.profiles            enable row level security;
+alter table public.event_categories    enable row level security;
+alter table public.events              enable row level security;
+alter table public.registrations       enable row level security;
 alter table public.registration_members enable row level security;
-alter table public.team_members         enable row level security;
-alter table public.contact_messages     enable row level security;
-alter table public.admin_audit_logs     enable row level security;
-alter table public.site_settings        enable row level security;
+alter table public.team_members        enable row level security;
+alter table public.contact_messages    enable row level security;
+alter table public.site_settings       enable row level security;
+alter table public.admin_audit_logs    enable row level security;
+alter table public.admin_emails        enable row level security;
 
+-- ------------------------------------------------------------
+-- PROFILES
+-- ------------------------------------------------------------
+drop policy if exists "profiles_select_own" on public.profiles;
+create policy "profiles_select_own" on public.profiles
+  for select using (auth.uid() = id or public.is_admin());
 
--- ------------------------------- users -------------------------------------
-drop policy if exists users_select_self  on public.users;
-drop policy if exists users_select_admin on public.users;
-drop policy if exists users_update_self  on public.users;
-drop policy if exists users_update_admin on public.users;
+drop policy if exists "profiles_insert_own" on public.profiles;
+create policy "profiles_insert_own" on public.profiles
+  for insert with check (auth.uid() = id);
 
-create policy users_select_self on public.users
-  for select using (id = auth.uid());
-
-create policy users_select_admin on public.users
-  for select using (public.is_admin());
-
--- A user may edit their own profile but may NOT change their own role:
--- the role check pins it to whatever it already is.
-create policy users_update_self on public.users
-  for update using (id = auth.uid())
+-- A user may update their own profile but may NOT change their role.
+drop policy if exists "profiles_update_own" on public.profiles;
+create policy "profiles_update_own" on public.profiles
+  for update
+  using (auth.uid() = id)
   with check (
-    id = auth.uid()
-    and role = (select u.role from public.users u where u.id = auth.uid())
+    auth.uid() = id
+    and role = (select p.role from public.profiles p where p.id = auth.uid())
   );
 
-create policy users_update_admin on public.users
-  for update using (public.is_admin()) with check (public.is_admin());
-
-
--- --------------------------- event_categories ------------------------------
-drop policy if exists categories_select_public on public.event_categories;
-drop policy if exists categories_write_admin   on public.event_categories;
-
-create policy categories_select_public on public.event_categories
-  for select using (true);
-
-create policy categories_write_admin on public.event_categories
+drop policy if exists "profiles_admin_all" on public.profiles;
+create policy "profiles_admin_all" on public.profiles
   for all using (public.is_admin()) with check (public.is_admin());
 
+-- ------------------------------------------------------------
+-- EVENT CATEGORIES — public read, admin write
+-- ------------------------------------------------------------
+drop policy if exists "categories_public_read" on public.event_categories;
+create policy "categories_public_read" on public.event_categories
+  for select using (active or public.is_admin());
 
--- -------------------------------- events -----------------------------------
-drop policy if exists events_select_public on public.events;
-drop policy if exists events_select_admin  on public.events;
-drop policy if exists events_write_admin   on public.events;
-
--- Visitors only see active events; admins see drafts/disabled ones too.
-create policy events_select_public on public.events
-  for select using (status = 'active');
-
-create policy events_select_admin on public.events
-  for select using (public.is_admin());
-
-create policy events_write_admin on public.events
+drop policy if exists "categories_admin_write" on public.event_categories;
+create policy "categories_admin_write" on public.event_categories
   for all using (public.is_admin()) with check (public.is_admin());
 
+-- ------------------------------------------------------------
+-- EVENTS — public read of active events, admin write
+-- ------------------------------------------------------------
+drop policy if exists "events_public_read" on public.events;
+create policy "events_public_read" on public.events
+  for select using (status = 'active' or public.is_admin());
 
--- ----------------------------- registrations -------------------------------
-drop policy if exists registrations_select_own    on public.registrations;
-drop policy if exists registrations_select_admin  on public.registrations;
-drop policy if exists registrations_insert_own    on public.registrations;
-drop policy if exists registrations_update_admin  on public.registrations;
-drop policy if exists registrations_delete_admin  on public.registrations;
+drop policy if exists "events_admin_write" on public.events;
+create policy "events_admin_write" on public.events
+  for all using (public.is_admin()) with check (public.is_admin());
 
-create policy registrations_select_own on public.registrations
-  for select using (user_id = auth.uid());
+-- ------------------------------------------------------------
+-- REGISTRATIONS — strictly owner-scoped
+-- ------------------------------------------------------------
+drop policy if exists "registrations_select_own" on public.registrations;
+create policy "registrations_select_own" on public.registrations
+  for select using (auth.uid() = user_id or public.is_admin());
 
-create policy registrations_select_admin on public.registrations
-  for select using (public.is_admin());
-
--- A participant can only insert a row for themselves, and only against an
--- event that is actually open.
-create policy registrations_insert_own on public.registrations
+drop policy if exists "registrations_insert_own" on public.registrations;
+create policy "registrations_insert_own" on public.registrations
   for insert with check (
-    user_id = auth.uid()
-    and exists (
-      select 1 from public.events e
-      where e.id = event_id and e.status = 'active'
-    )
+    auth.uid() = user_id
+    and exists (select 1 from public.events e where e.id = event_id and e.status = 'active')
   );
 
--- Status transitions are an admin action only.
-create policy registrations_update_admin on public.registrations
-  for update using (public.is_admin()) with check (public.is_admin());
+-- Owners may cancel; only admins may set CONFIRMED / ATTENDED.
+drop policy if exists "registrations_update_own" on public.registrations;
+create policy "registrations_update_own" on public.registrations
+  for update
+  using (auth.uid() = user_id)
+  with check (auth.uid() = user_id and status in ('REGISTERED', 'CANCELLED'));
 
-create policy registrations_delete_admin on public.registrations
-  for delete using (public.is_admin());
+drop policy if exists "registrations_delete_own" on public.registrations;
+create policy "registrations_delete_own" on public.registrations
+  for delete using (auth.uid() = user_id or public.is_admin());
 
+drop policy if exists "registrations_admin_all" on public.registrations;
+create policy "registrations_admin_all" on public.registrations
+  for all using (public.is_admin()) with check (public.is_admin());
 
--- -------------------------- registration_members ---------------------------
-drop policy if exists reg_members_select_own   on public.registration_members;
-drop policy if exists reg_members_select_admin on public.registration_members;
-drop policy if exists reg_members_insert_own   on public.registration_members;
-drop policy if exists reg_members_write_admin  on public.registration_members;
-
-create policy reg_members_select_own on public.registration_members
+-- ------------------------------------------------------------
+-- REGISTRATION MEMBERS — follow the parent registration
+-- ------------------------------------------------------------
+drop policy if exists "reg_members_select" on public.registration_members;
+create policy "reg_members_select" on public.registration_members
   for select using (
-    exists (
+    public.is_admin()
+    or exists (
       select 1 from public.registrations r
       where r.id = registration_id and r.user_id = auth.uid()
     )
   );
 
-create policy reg_members_select_admin on public.registration_members
-  for select using (public.is_admin());
-
-create policy reg_members_insert_own on public.registration_members
-  for insert with check (
-    exists (
+drop policy if exists "reg_members_write" on public.registration_members;
+create policy "reg_members_write" on public.registration_members
+  for all
+  using (
+    public.is_admin()
+    or exists (
+      select 1 from public.registrations r
+      where r.id = registration_id and r.user_id = auth.uid()
+    )
+  )
+  with check (
+    public.is_admin()
+    or exists (
       select 1 from public.registrations r
       where r.id = registration_id and r.user_id = auth.uid()
     )
   );
 
-create policy reg_members_write_admin on public.registration_members
+-- ------------------------------------------------------------
+-- TEAM MEMBERS — public read, admin write
+-- ------------------------------------------------------------
+drop policy if exists "team_public_read" on public.team_members;
+create policy "team_public_read" on public.team_members
+  for select using (active or public.is_admin());
+
+drop policy if exists "team_admin_write" on public.team_members;
+create policy "team_admin_write" on public.team_members
   for all using (public.is_admin()) with check (public.is_admin());
 
+-- ------------------------------------------------------------
+-- CONTACT MESSAGES — anyone may submit, only admins may read
+-- ------------------------------------------------------------
+drop policy if exists "contact_insert_anyone" on public.contact_messages;
+create policy "contact_insert_anyone" on public.contact_messages
+  for insert to anon, authenticated with check (true);
 
--- ------------------------------ team_members -------------------------------
-drop policy if exists team_select_public on public.team_members;
-drop policy if exists team_select_admin  on public.team_members;
-drop policy if exists team_write_admin   on public.team_members;
-
--- Disabling a member hides them from the public site immediately.
-create policy team_select_public on public.team_members
-  for select using (active = true);
-
-create policy team_select_admin on public.team_members
+drop policy if exists "contact_admin_read" on public.contact_messages;
+create policy "contact_admin_read" on public.contact_messages
   for select using (public.is_admin());
 
-create policy team_write_admin on public.team_members
+drop policy if exists "contact_admin_write" on public.contact_messages;
+create policy "contact_admin_write" on public.contact_messages
   for all using (public.is_admin()) with check (public.is_admin());
 
-
--- ---------------------------- contact_messages -----------------------------
-drop policy if exists messages_insert_anyone on public.contact_messages;
-drop policy if exists messages_select_admin  on public.contact_messages;
-drop policy if exists messages_write_admin   on public.contact_messages;
-
--- Anyone, including anonymous visitors, may send a message...
-create policy messages_insert_anyone on public.contact_messages
-  for insert with check (true);
-
--- ...but only admins can read them back.
-create policy messages_select_admin on public.contact_messages
-  for select using (public.is_admin());
-
-create policy messages_write_admin on public.contact_messages
-  for all using (public.is_admin()) with check (public.is_admin());
-
-
--- ---------------------------- admin_audit_logs -----------------------------
-drop policy if exists audit_select_admin on public.admin_audit_logs;
-drop policy if exists audit_insert_admin on public.admin_audit_logs;
-
-create policy audit_select_admin on public.admin_audit_logs
-  for select using (public.is_admin());
-
-create policy audit_insert_admin on public.admin_audit_logs
-  for insert with check (public.is_admin());
-
-
--- ----------------------------- site_settings -------------------------------
-drop policy if exists settings_select_public on public.site_settings;
-drop policy if exists settings_update_admin  on public.site_settings;
-
-create policy settings_select_public on public.site_settings
+-- ------------------------------------------------------------
+-- SITE SETTINGS — public read, admin write
+-- ------------------------------------------------------------
+drop policy if exists "settings_public_read" on public.site_settings;
+create policy "settings_public_read" on public.site_settings
   for select using (true);
 
-create policy settings_update_admin on public.site_settings
-  for update using (public.is_admin()) with check (public.is_admin());
+drop policy if exists "settings_admin_write" on public.site_settings;
+create policy "settings_admin_write" on public.site_settings
+  for all using (public.is_admin()) with check (public.is_admin());
 
+-- ------------------------------------------------------------
+-- AUDIT LOGS & ADMIN EMAILS — admin only
+-- ------------------------------------------------------------
+drop policy if exists "audit_admin_only" on public.admin_audit_logs;
+create policy "audit_admin_only" on public.admin_audit_logs
+  for all using (public.is_admin()) with check (public.is_admin());
 
--- ---------------------------------------------------------------------------
--- Guard: never allow the last admin to be demoted.
--- Enforced in a trigger so it holds even against the service role key.
--- ---------------------------------------------------------------------------
-create or replace function public.prevent_last_admin_demotion()
-returns trigger
-language plpgsql
-as $$
-begin
-  if old.role = 'admin' and new.role <> 'admin' then
-    if (select count(*) from public.users where role = 'admin') <= 1 then
-      raise exception 'Cannot demote the last remaining admin.';
-    end if;
-  end if;
-  return new;
-end;
-$$;
-
-drop trigger if exists users_prevent_last_admin on public.users;
-create trigger users_prevent_last_admin
-  before update of role on public.users
-  for each row execute function public.prevent_last_admin_demotion();
+drop policy if exists "admin_emails_admin_only" on public.admin_emails;
+create policy "admin_emails_admin_only" on public.admin_emails
+  for all using (public.is_admin()) with check (public.is_admin());
