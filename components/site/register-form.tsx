@@ -162,7 +162,7 @@ export function RegisterForm({ events }: RegisterFormProps) {
       <div className="grid gap-6">
         <div className="grid gap-2">
           <Label htmlFor="event">Event</Label>
-          <Select value={eventSlug} onValueChange={(v) => setEventSlug(v ?? '')}>
+          <Select value={eventSlug} onValueChange={setEventSlug}>
             <SelectTrigger id="event">
               <SelectValue placeholder="Select an event" />
             </SelectTrigger>
@@ -241,7 +241,7 @@ export function RegisterForm({ events }: RegisterFormProps) {
           </div>
           <div className="grid gap-2">
             <Label htmlFor="year">Year of study</Label>
-            <Select value={year} onValueChange={(v) => setYear(v ?? '')}>
+            <Select value={year} onValueChange={setYear}>
               <SelectTrigger id="year">
                 <SelectValue placeholder="Select year" />
               </SelectTrigger>

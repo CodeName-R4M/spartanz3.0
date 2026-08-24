@@ -10,7 +10,7 @@ import {
   getRegistrations,
   uid,
 } from '@/lib/store'
-import { fetchEvents, fetchMyRegistrations } from '@/lib/data'
+import { getEvents, fetchMyRegistrations } from '@/lib/data'
 import type {
   ContactMessage,
   Registration,
@@ -94,7 +94,7 @@ export async function registerForEvent(input: {
 
   // Always re-read the event server-side; never trust fee/team size from the
   // client payload.
-  const events = await fetchEvents()
+  const events = await getEvents()
   const event = events.find((e) => e.id === input.eventId)
   if (!event || event.status !== 'active') {
     return { ok: false, error: 'This event is not open for registration.' }

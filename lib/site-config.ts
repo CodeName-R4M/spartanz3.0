@@ -1,78 +1,149 @@
 /**
- * SPARTANZ 3.0 — configurable defaults.
- * ORGANISERS: every value here is overridable from /admin/settings once the
- * database is connected. These are only the fallback defaults.
+ * SPARTANZ 3.0 — central template configuration.
+ *
+ * These are TEMPORARY placeholder values. Replace them with real data later
+ * (or wire them up to the database / admin settings table).
+ *
+ * The initial admin is seeded from INITIAL_ADMIN_EMAIL. It defaults to the
+ * requested admin account below until you connect auth + database.
  */
+
+export const INITIAL_ADMIN_EMAIL =
+  process.env.INITIAL_ADMIN_EMAIL ?? 'sriramisno1@gmail.com'
+
 export const siteConfig = {
-  symposium: "SPARTANZ 3.0",
-  subtitle: "Department Symposium",
-  theme: "Avengers: Doomsday Inspired",
-  college: "New Prince Shri Bhavani College of Engineering",
-  department: "CSE — Cyber Security",
-  club: "RootSec Club",
-  tagline: "The end of one world is the beginning of another.",
-  heroLine:
-    "A one-day cinematic symposium where cyber security students face the collapse — and rebuild what comes next.",
+  event: 'SPARTANZ 3.0',
+  subtitle: 'DEPARTMENT SYMPOSIUM',
+  theme: 'AVENGERS: DOOMSDAY INSPIRED',
+  department: 'CSE — CYBER SECURITY',
+  college: 'New Prince Shri Bhavani College of Engineering',
+  club: 'RootSec Club',
 
-  // CONFIGURABLE: event date, venue, countdown target
-  eventDate: "2026-03-14",
-  eventDateLabel: "14 March 2026",
-  countdownTarget: "2026-03-14T09:00:00+05:30",
-  venue: "Main Auditorium, New Prince Shri Bhavani College of Engineering",
-  venueShort: "Main Auditorium Block",
-  city: "Gowrivakkam, Chennai",
-  mapsQuery: "New Prince Shri Bhavani College of Engineering, Gowrivakkam, Chennai",
+  // TEMPLATE — replace with the real symposium date (ISO string).
+  eventDate: '2026-03-14T09:00:00',
+  eventDateLabel: '14 MARCH 2026',
+  venue: 'Main Auditorium, NPSBCOE',
 
-  // CONFIGURABLE: contact details
-  contactEmail: "spartanz@npsbcollege.edu.in",
-  contactPhone: "+91 90000 00000",
-  registrationOpen: true,
+  contactEmail: 'spartanz@example.com',
+  contactPhone: '+91 00000 00000',
 
   socials: {
-    instagram: "https://instagram.com/",
-    linkedin: "https://linkedin.com/",
-    github: "https://github.com/",
-    youtube: "https://youtube.com/",
+    instagram: '#',
+    linkedin: '#',
+    github: '#',
+    youtube: '#',
   },
-
-  // CONFIGURABLE: day-of run sheet shown on the home page
-  schedule: [
-    { time: "08:00", title: "Registration Desk Opens", detail: "Report at the Main Auditorium foyer with your college ID and confirmation code." },
-    { time: "09:00", title: "Inauguration & Keynote", detail: "Welcome address by the Head of Department, followed by the RootSec keynote." },
-    { time: "09:30", title: "Technical Round 1", detail: "Code Doomsday, Breach Protocol and Forensic Gauntlet begin in their assigned labs." },
-    { time: "11:00", title: "Non-Technical Slot", detail: "Paper Storm, Meme Infinity and Shadow Auction run in parallel across seminar halls." },
-    { time: "13:00", title: "Lunch Break", detail: "Provided for all registered participants at the college canteen." },
-    { time: "14:00", title: "Technical Round 2 & Finals", detail: "Web Siege, Debug Multiverse and Cine Cipher finals, judged live." },
-    { time: "16:00", title: "Endgame Arena", detail: "The cross-event finale — top scorers from every track compete for the overall title." },
-    { time: "17:30", title: "Valedictory & Prize Distribution", detail: "Results, cash prizes and certificates for every finalist." },
-  ],
-
-  coordinators: [
-    { name: "Dr. A. Ramesh", role: "Head of Department, CSE — Cyber Security", phone: "+91 90000 00001" },
-    { name: "Prof. K. Divya", role: "Staff Coordinator, RootSec Club", phone: "+91 90000 00002" },
-    { name: "Aravind S", role: "Student Convenor, SPARTANZ 3.0", phone: "+91 90000 00003" },
-  ],
 } as const
-
 export const NAV_LINKS = [
-  { href: "/", label: "Home" },
-  { href: "/events", label: "Events" },
-  { href: "/about", label: "About" },
-  { href: "/teams", label: "Teams" },
-  { href: "/contact", label: "Contact" },
+  { href: '/', label: 'Home' },
+  { href: '/events', label: 'Events' },
+  { href: '/about', label: 'About' },
+  { href: '/team', label: 'Team' },
+  { href: '/contact', label: 'Contact' },
 ] as const
+export type EventCategory = 'TECHNICAL' | 'NON-TECHNICAL'
 
-export const TEAM_CATEGORIES = [
-  "Faculty Coordinators",
-  "Organizing Committee",
-  "Event Coordinators",
-  "Technical Team",
-  "Design Team",
-  "Media Team",
-  "Hospitality Team",
-  "Registration Team",
-] as const
+export type EventPreview = {
+  slug: string
+  name: string
+  category: EventCategory
+  shortDescription: string
+  date: string
+  venue: string
+  teamSize: string
+  fee: string
+  prize: string
+}
 
-export const REGISTRATION_STATUSES = ["REGISTERED", "CONFIRMED", "CANCELLED", "ATTENDED"] as const
+// TEMPLATE events — replace with data from the database later.
+export const featuredEvents: EventPreview[] = [
+  {
+    slug: 'code-storm',
+    name: 'Code Storm',
+    category: 'TECHNICAL',
+    shortDescription: 'Competitive coding gauntlet under a ticking doomsday clock.',
+    date: '14 MAR',
+    venue: 'Lab A-Block',
+    teamSize: 'Solo',
+    fee: '₹150',
+    prize: '₹10,000',
+  },
+  {
+    slug: 'ctf-breach',
+    name: 'Breach: CTF',
+    category: 'TECHNICAL',
+    shortDescription: 'Capture-the-flag warfare. Exploit, escalate, dominate.',
+    date: '14 MAR',
+    venue: 'Cyber Lab',
+    teamSize: '2 Members',
+    fee: '₹200',
+    prize: '₹15,000',
+  },
+  {
+    slug: 'paper-vortex',
+    name: 'Paper Vortex',
+    category: 'TECHNICAL',
+    shortDescription: 'Present research that could reshape the future.',
+    date: '14 MAR',
+    venue: 'Seminar Hall',
+    teamSize: '2 Members',
+    fee: '₹150',
+    prize: '₹8,000',
+  },
+  {
+    slug: 'valorant-endgame',
+    name: 'Endgame Arena',
+    category: 'NON-TECHNICAL',
+    shortDescription: '5v5 tactical showdown for the last team standing.',
+    date: '15 MAR',
+    venue: 'Gaming Zone',
+    teamSize: '5 Members',
+    fee: '₹250',
+    prize: '₹12,000',
+  },
+  {
+    slug: 'meme-multiverse',
+    name: 'Meme Multiverse',
+    category: 'NON-TECHNICAL',
+    shortDescription: 'Bend reality with the sharpest memes in the room.',
+    date: '15 MAR',
+    venue: 'Open Stage',
+    teamSize: 'Solo',
+    fee: '₹100',
+    prize: '₹5,000',
+  },
+  {
+    slug: 'quiz-infinity',
+    name: 'Infinity Quiz',
+    category: 'NON-TECHNICAL',
+    shortDescription: 'Tech, cinema and chaos — prove your mind is unbreakable.',
+    date: '15 MAR',
+    venue: 'Seminar Hall',
+    teamSize: '2 Members',
+    fee: '₹120',
+    prize: '₹6,000',
+  },
+]
 
-export const YEARS = ["I Year", "II Year", "III Year", "IV Year", "PG / Other"] as const
+export const eventStats = [
+  { label: 'Events', value: 12, suffix: '+' },
+  { label: 'Prize Pool', value: 75, suffix: 'K+' },
+  { label: 'Participants', value: 800, suffix: '+' },
+  { label: 'Colleges', value: 20, suffix: '+' },
+]
+
+export const timeline = [
+  { time: '08:30', title: 'Registration & Check-in', desc: 'Collect your battle pass and ID.' },
+  { time: '09:30', title: 'Inauguration', desc: 'The doomsday protocol begins.' },
+  { time: '10:30', title: 'Technical Events', desc: 'Code, breach and conquer.' },
+  { time: '13:00', title: 'Non-Technical Events', desc: 'Games, quizzes and chaos.' },
+  { time: '16:00', title: 'Finals & Showdown', desc: 'Only the strongest remain.' },
+  { time: '17:30', title: 'Valedictory', desc: 'Crown the champions.' },
+]
+
+export const teamPreview = [
+  { name: 'Faculty Lead', role: 'Convenor', category: 'Faculty' },
+  { name: 'Student Head', role: 'Organizing Lead', category: 'Organizing' },
+  { name: 'Tech Lead', role: 'Technical Head', category: 'Technical' },
+  { name: 'Design Lead', role: 'Creative Head', category: 'Design' },
+]

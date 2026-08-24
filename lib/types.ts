@@ -101,7 +101,6 @@ export interface EventItem {
   prizes: string
   coordinator: EventCoordinator
   status: EventStatus
-  featured?: boolean
   displayOrder: number
   createdAt: string
   updatedAt: string
@@ -185,11 +184,7 @@ export interface SiteSettings {
   phone: string
   socials: SocialLink[]
   heroTagline: string
-  heroSubline?: string
   /** ISO timestamp the hero countdown ticks down to. */
   countdownDate: string
   registrationOpen: boolean
 }
-
-export type AppUser = User
-export type SymposiumEvent = EventItem

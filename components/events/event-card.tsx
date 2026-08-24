@@ -2,21 +2,21 @@ import Image from "next/image"
 import Link from "next/link"
 import { ArrowUpRight, Clock, MapPin, Users } from "lucide-react"
 import { TiltCard } from "@/components/motion/tilt-card"
-import type { EventItem } from "@/lib/types"
+import type { SymposiumEvent } from "@/lib/types"
 
-function teamLabel(event: EventItem) {
-  if (event.teamSize.max <= 1) return "Solo"
-  if (event.teamSize.min === event.teamSize.max) return `Team of ${event.teamSize.max}`
-  return `Team ${event.teamSize.min}–${event.teamSize.max}`
+function teamLabel(event: SymposiumEvent) {
+  if (event.max_team_size <= 1) return "Solo"
+  if (event.min_team_size === event.max_team_size) return `Team of ${event.max_team_size}`
+  return `Team ${event.min_team_size}–${event.max_team_size}`
 }
 
-export function EventCard({ event, priority = false }: { event: EventItem; priority?: boolean }) {
+export function EventCard({ event, priority = false }: { event: SymposiumEvent; priority?: boolean }) {
   return (
     <TiltCard className="group h-full">
       <article className="clip-plate metal flex h-full flex-col border border-border bg-card transition-colors duration-300 group-hover:border-primary/50">
         <div className="relative aspect-[16/10] overflow-hidden">
           <Image
-            src={event.image || "/events/generic-technical.png"}
+            src={event.image_url || "/events/generic-technical.png"}
             alt={event.name}
             fill
             priority={priority}
@@ -26,7 +26,7 @@ export function EventCard({ event, priority = false }: { event: EventItem; prior
           />
           <div className="absolute inset-0 bg-[linear-gradient(to_top,var(--card),transparent_62%)]" />
           <span className="absolute left-3 top-3 border border-primary/40 bg-background/80 px-2 py-1 font-mono text-[9px] uppercase tracking-[0.2em] text-primary">
-            {event.category === 'technical' ? 'Technical' : event.category === 'non-technical' ? 'Non-Technical' : 'Event'}
+            {event.category_name ?? "Event"}
           </span>
           {event.featured && (
             <span className="absolute right-3 top-3 bg-primary px-2 py-1 font-mono text-[9px] uppercase tracking-[0.2em] text-primary-foreground">
@@ -41,14 +41,14 @@ export function EventCard({ event, priority = false }: { event: EventItem; prior
               {event.name}
             </h3>
             <p className="mt-2 text-sm leading-relaxed text-muted-foreground text-pretty">
-              {event.shortDescription}
+              {event.short_description}
             </p>
           </div>
 
           <ul className="mt-auto flex flex-wrap gap-x-4 gap-y-2 border-t border-border pt-4 font-mono text-[10px] uppercase tracking-[0.14em] text-muted-foreground">
             <li className="flex items-center gap-1.5">
               <Clock className="size-3 text-primary" aria-hidden="true" />
-              {event.startTime}
+              {event.start_time}
             </li>
             <li className="flex items-center gap-1.5">
               <Users className="size-3 text-primary" aria-hidden="true" />
@@ -62,7 +62,7 @@ export function EventCard({ event, priority = false }: { event: EventItem; prior
 
           <div className="flex items-center justify-between gap-3">
             <span className="font-display text-sm font-bold text-foreground">
-              {event.registrationFee > 0 ? `₹${event.registrationFee}` : "Free Entry"}
+              {event.registration_fee > 0 ? `₹${event.registration_fee}` : "Free Entry"}
             </span>
             <Link
               href={`/events/${event.slug}`}

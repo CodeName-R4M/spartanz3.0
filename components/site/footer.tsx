@@ -1,12 +1,23 @@
 import Link from "next/link"
-import { Camera, Code2, Play, Users, Mail, MapPin, Phone, ShieldHalf } from "lucide-react"
+import {
+  Mail,
+  MapPin,
+  Phone,
+  ShieldHalf,
+} from "lucide-react"
+import {
+  FaGithub,
+  FaInstagram,
+  FaLinkedinIn,
+  FaYoutube,
+} from "react-icons/fa"
 import { NAV_LINKS, siteConfig } from "@/lib/site-config"
 
 const socials = [
-  { href: siteConfig.socials.instagram, label: "Instagram", Icon: Camera },
-  { href: siteConfig.socials.linkedin, label: "LinkedIn", Icon: Users },
-  { href: siteConfig.socials.github, label: "GitHub", Icon: Code2 },
-  { href: siteConfig.socials.youtube, label: "YouTube", Icon: Play },
+  { href: siteConfig.socials.instagram, label: "Instagram", Icon: FaInstagram },
+  { href: siteConfig.socials.linkedin, label: "LinkedIn", Icon: FaLinkedinIn },
+  { href: siteConfig.socials.github, label: "GitHub", Icon: FaGithub },
+  { href: siteConfig.socials.youtube, label: "YouTube", Icon: FaYoutube },
 ]
 
 export function Footer() {
@@ -22,13 +33,13 @@ export function Footer() {
                 <ShieldHalf className="size-5 text-primary" aria-hidden="true" />
               </span>
               <div>
-                <p className="font-display text-base font-bold tracking-[0.16em]">{siteConfig.symposium}</p>
+                <p className="font-display text-base font-bold tracking-[0.16em]">{siteConfig.event}</p>
                 <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-muted-foreground">
                   {siteConfig.eventDateLabel}
                 </p>
               </div>
             </div>
-            <p className="mt-5 text-sm leading-relaxed text-muted-foreground">{siteConfig.heroLine}</p>
+            <p className="mt-5 text-sm leading-relaxed text-muted-foreground">{siteConfig.subtitle}</p>
             <p className="mt-4 font-mono text-[11px] uppercase tracking-[0.18em] text-primary">
               {siteConfig.club} · {siteConfig.department}
             </p>
@@ -91,7 +102,7 @@ export function Footer() {
                 </li>
                 <li className="flex gap-2.5 text-sm leading-relaxed text-foreground/80">
                   <MapPin className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden="true" />
-                  <span>{siteConfig.venueShort}, {siteConfig.city}</span>
+                  <span>{siteConfig.venue}</span>
                 </li>
               </ul>
             </div>

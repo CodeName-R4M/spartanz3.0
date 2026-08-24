@@ -1,70 +1,64 @@
-"use client"
+'use client'
 
-import { useEffect, useRef, useState } from "react"
-import { cn } from "@/lib/utils"
+import { motion, type Variants } from 'motion/react'
+import type { ReactNode } from 'react'
 
-/**
- * Scroll reveal using a SINGLE shared IntersectionObserver.
- * No scroll listeners, no per-frame JS, animation runs on the compositor.
- */
-let sharedObserver: IntersectionObserver | null = null
-const callbacks = new WeakMap<Element, () => void>()
-
-function observe(el: Element, cb: () => void) {
-  if (typeof IntersectionObserver === "undefined") {
-    cb()
-    return () => {}
-  }
-  if (!sharedObserver) {
-    sharedObserver = new IntersectionObserver(
-      (entries) => {
-        for (const entry of entries) {
-          if (entry.isIntersecting) {
-            callbacks.get(entry.target)?.()
-            sharedObserver?.unobserve(entry.target)
-            callbacks.delete(entry.target)
-          }
-        }
-      },
-      { rootMargin: "0px 0px -12% 0px", threshold: 0.08 },
-    )
-  }
-  callbacks.set(el, cb)
-  sharedObserver.observe(el)
-  return () => {
-    sharedObserver?.unobserve(el)
-    callbacks.delete(el)
-  }
+const variants: Variants = {
+  hidden: { opacity: 0, y: 28, filter: 'blur(6px)' },
+  show: {
+    opacity: 1,
+    y: 0,
+    filter: 'blur(0px)',
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+  },
 }
 
-interface RevealProps extends React.HTMLAttributes<HTMLDivElement> {
+export function Reveal({
+  children,
+  delay = 0,
+  className,
+  as = 'div',
+}: {
+  children: ReactNode
   delay?: number
-  variant?: "up" | "scale"
-  as?: "div" | "section" | "li" | "article" | "header"
-}
-
-export function Reveal({ delay = 0, variant = "up", as = "div", className, children, ...rest }: RevealProps) {
-  const ref = useRef<HTMLDivElement>(null)
-  const [visible, setVisible] = useState(false)
-
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    return observe(el, () => setVisible(true))
-  }, [])
-
-  const Tag = as as "div"
-
+  className?: string
+  as?: 'div' | 'li' | 'span'
+}) {
+  const MotionTag = motion[as]
   return (
-    <Tag
-      ref={ref}
-      data-reveal={variant === "scale" ? "scale" : ""}
-      data-visible={visible ? "true" : "false"}
-      style={{ ["--reveal-delay" as string]: `${delay}ms` }}
-      className={cn(className)}
-      {...rest}
+    <MotionTag
+      className={className}
+      variants={variants}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, margin: '-80px' }}
+      transition={{ delay }}
     >
       {children}
-    </Tag>
+    </MotionTag>
   )
 }
+
+export function RevealGroup({
+  children,
+  className,
+  stagger = 0.1,
+}: {
+  children: ReactNode
+  className?: string
+  stagger?: number
+}) {
+  return (
+    <motion.div
+      className={className}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true, margin: '-80px' }}
+      variants={{ show: { transition: { staggerChildren: stagger } } }}
+    >
+      {children}
+    </motion.div>
+  )
+}
+
+export const item: Variants = variants

@@ -1,12 +1,12 @@
-import { fetchCategories, fetchEvents } from '@/lib/data'
+import { getCategories, getEvents } from '@/lib/data'
 import { CategoriesManager } from '@/components/admin/categories-manager'
 
 export const metadata = { title: 'Categories · Admin' }
 
 export default async function AdminCategoriesPage() {
   const [categories, events] = await Promise.all([
-    fetchCategories(),
-    fetchEvents(),
+    getCategories(),
+    getEvents(),
   ])
 
   const sorted = [...categories].sort(

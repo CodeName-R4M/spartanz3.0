@@ -11,25 +11,11 @@ function Sheet({ ...props }: SheetPrimitive.Root.Props) {
   return <SheetPrimitive.Root data-slot="sheet" {...props} />
 }
 
-function SheetTrigger({ asChild, ...props }: SheetPrimitive.Trigger.Props & { asChild?: boolean }) {
-  if (asChild && React.isValidElement(props.children)) {
-    const child = React.Children.only(props.children) as React.ReactElement<any>
-    return React.cloneElement(child, {
-      className: cn(child.props.className),
-      "data-slot": "sheet-trigger",
-    })
-  }
+function SheetTrigger({ ...props }: SheetPrimitive.Trigger.Props) {
   return <SheetPrimitive.Trigger data-slot="sheet-trigger" {...props} />
 }
 
-function SheetClose({ asChild, ...props }: SheetPrimitive.Close.Props & { asChild?: boolean }) {
-  if (asChild && React.isValidElement(props.children)) {
-    const child = React.Children.only(props.children) as React.ReactElement<any>
-    return React.cloneElement(child, {
-      className: cn(child.props.className),
-      "data-slot": "sheet-close",
-    })
-  }
+function SheetClose({ ...props }: SheetPrimitive.Close.Props) {
   return <SheetPrimitive.Close data-slot="sheet-close" {...props} />
 }
 

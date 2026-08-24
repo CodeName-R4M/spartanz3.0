@@ -25,7 +25,6 @@ export const SEED_SETTINGS: SiteSettings = {
     { label: 'GitHub', url: 'https://github.com' },
   ],
   heroTagline: 'The dimension breaks. The battle begins.',
-  heroSubline: 'A one-day cinematic symposium where cyber security students face the collapse — and rebuild what comes next.',
   countdownDate: '2026-03-14T09:00:00',
   registrationOpen: true,
 }

@@ -9,7 +9,7 @@ import {
 import { StatCard } from '@/components/admin/stat-card'
 import { BarList } from '@/components/admin/bar-list'
 import {
-  fetchEvents,
+  getEvents,
   fetchRegistrations,
   fetchTeam,
   fetchUsers,
@@ -17,7 +17,7 @@ import {
 
 export default async function AdminOverviewPage() {
   const [events, registrations, users, team] = await Promise.all([
-    fetchEvents(),
+    getEvents(),
     fetchRegistrations(),
     fetchUsers(),
     fetchTeam(),

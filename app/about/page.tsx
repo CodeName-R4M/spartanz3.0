@@ -4,7 +4,7 @@ import { Crosshair, Eye, Rocket, Shield, Swords, Trophy } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Navbar } from '@/components/site/navbar'
 import { Footer } from '@/components/site/footer'
-import { fetchEvents, fetchSettings, fetchTeam } from '@/lib/data'
+import { getEvents } from '@/lib/data'
 
 export const metadata: Metadata = {
   title: 'About',
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 export default async function AboutPage() {
   const [settings, events, team] = await Promise.all([
     fetchSettings(),
-    fetchEvents({ activeOnly: true }),
+    getEvents({ activeOnly: true }),
     fetchTeam({ activeOnly: true }),
   ])
 
