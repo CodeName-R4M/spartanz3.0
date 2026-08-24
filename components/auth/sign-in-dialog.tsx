@@ -1,9 +1,10 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Loader2 } from 'lucide-react'
 import { toast } from 'sonner'
 import { useAuth } from '@/lib/auth-context'
+import { getAuthMode, getGoogleOAuthUrl } from '@/app/actions/auth'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
@@ -11,7 +12,9 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from '@/components/ui/dialog'
+import type { ReactNode } from 'react'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
@@ -47,14 +50,44 @@ const PERSONAS = [
 export function SignInDialog({
   open,
   onOpenChange,
+  children,
 }: {
-  open: boolean
-  onOpenChange: (v: boolean) => void
+  /** Controlled open state. Omit when using a `children` trigger. */
+  open?: boolean
+  onOpenChange?: (v: boolean) => void
+  /** Optional trigger element; enables uncontrolled usage. */
+  children?: ReactNode
 }) {
   const { signIn } = useAuth()
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [loading, setLoading] = useState(false)
+  const [internalOpen, setInternalOpen] = useState(false)
+  const [mode, setMode] = useState<'supabase' | 'local' | null>(null)
+
+  const isControlled = open !== undefined
+  const dialogOpen = isControlled ? open : internalOpen
+  const setDialogOpen = (v: boolean) => {
+    if (isControlled) onOpenChange?.(v)
+    else setInternalOpen(v)
+  }
+
+  useEffect(() => {
+    void getAuthMode().then(setMode)
+  }, [])
+
+  async function handleGoogle() {
+    setLoading(true)
+    const res = await getGoogleOAuthUrl(
+      typeof window !== 'undefined' ? window.location.pathname : '/',
+    )
+    if (res.ok && res.url) {
+      window.location.href = res.url
+      return
+    }
+    setLoading(false)
+    toast.error(res.error ?? 'Could not start Google sign-in.')
+  }
 
   async function handleSignIn(payload: { name: string; email: string }) {
     if (!payload.name.trim() || !payload.email.trim()) {
@@ -66,7 +99,7 @@ export function SignInDialog({
     setLoading(false)
     if (res.ok) {
       toast.success('Signed in successfully.')
-      onOpenChange(false)
+      setDialogOpen(false)
       setName('')
       setEmail('')
     } else {
@@ -75,79 +108,99 @@ export function SignInDialog({
   }
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+      {children ? <DialogTrigger asChild>{children}</DialogTrigger> : null}
       <DialogContent className="border-border/60 bg-card sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="font-display text-xl tracking-wide">
             Enter the Arena
           </DialogTitle>
           <DialogDescription>
-            Sign in to register for events and track your battles. Google
-            sign-in is simulated during preview.
+            {mode === 'supabase'
+              ? 'Sign in with Google to register for events and track your battles.'
+              : 'Sign in to register for events and track your battles. Google sign-in runs in demo mode until Supabase keys are added.'}
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-4 pt-2">
-          <div className="space-y-2">
-            <Label htmlFor="signin-name">Full name</Label>
-            <Input
-              id="signin-name"
-              placeholder="Your name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
+        {mode === 'supabase' ? (
+          <div className="space-y-4 pt-2">
+            <Button
+              className="w-full gap-2"
+              size="lg"
+              disabled={loading}
+              onClick={handleGoogle}
+            >
+              {loading ? (
+                <Loader2 className="size-4 animate-spin" />
+              ) : (
+                <GoogleGlyph />
+              )}
+              Continue with Google
+            </Button>
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="signin-email">Email</Label>
-            <Input
-              id="signin-email"
-              type="email"
-              placeholder="you@example.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
+        ) : (
+          <div className="space-y-4 pt-2">
+            <div className="space-y-2">
+              <Label htmlFor="signin-name">Full name</Label>
+              <Input
+                id="signin-name"
+                placeholder="Your name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="signin-email">Email</Label>
+              <Input
+                id="signin-email"
+                type="email"
+                placeholder="you@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
 
-          <Button
-            className="w-full gap-2"
-            variant="outline"
-            disabled={loading}
-            onClick={() => handleSignIn({ name, email })}
-          >
-            {loading ? (
-              <Loader2 className="size-4 animate-spin" />
-            ) : (
-              <GoogleGlyph />
-            )}
-            Continue with Google
-          </Button>
+            <Button
+              className="w-full gap-2"
+              variant="outline"
+              disabled={loading}
+              onClick={() => handleSignIn({ name, email })}
+            >
+              {loading ? (
+                <Loader2 className="size-4 animate-spin" />
+              ) : (
+                <GoogleGlyph />
+              )}
+              Continue with Google
+            </Button>
 
-          <div className="flex items-center gap-3 py-1">
-            <div className="h-px flex-1 bg-border" />
-            <span className="text-xs uppercase tracking-widest text-muted-foreground">
-              or quick demo
-            </span>
-            <div className="h-px flex-1 bg-border" />
-          </div>
+            <div className="flex items-center gap-3 py-1">
+              <div className="h-px flex-1 bg-border" />
+              <span className="text-xs uppercase tracking-widest text-muted-foreground">
+                or quick demo
+              </span>
+              <div className="h-px flex-1 bg-border" />
+            </div>
 
-          <div className="grid gap-2">
-            {PERSONAS.map((p) => (
-              <Button
-                key={p.email}
-                variant="secondary"
-                size="sm"
-                disabled={loading}
-                onClick={() => handleSignIn(p)}
-                className="justify-start"
-              >
-                {p.name}
-                <span className="ml-auto text-xs text-muted-foreground">
-                  {p.email}
-                </span>
-              </Button>
-            ))}
+            <div className="grid gap-2">
+              {PERSONAS.map((p) => (
+                <Button
+                  key={p.email}
+                  variant="secondary"
+                  size="sm"
+                  disabled={loading}
+                  onClick={() => handleSignIn(p)}
+                  className="justify-start"
+                >
+                  {p.name}
+                  <span className="ml-auto text-xs text-muted-foreground">
+                    {p.email}
+                  </span>
+                </Button>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
       </DialogContent>
     </Dialog>
   )
