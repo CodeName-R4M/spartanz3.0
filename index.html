@@ -18,38 +18,39 @@
     --chrome:#d8d9db;
     --chrome-dim:#8a8b90;
     --line-white:#f2f2f0;
+    --panel:rgba(20,20,25,.55);
   }
 
   *{ margin:0; padding:0; box-sizing:border-box; }
 
   html,body{
-    width:100%; height:100%;
+    width:100%;
     background:var(--tarmac);
-    overflow:hidden;
     font-family:'Rajdhani',sans-serif;
   }
 
   body{
     position:relative;
-    display:flex;
-    align-items:center;
-    justify-content:center;
     min-height:100svh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
   }
 
   /* ===== carbon fiber base ===== */
   .carbon{
-    position:absolute; inset:0;
+    position:fixed; inset:0;
     background-image:
       repeating-linear-gradient(45deg, #16161b 0, #16161b 2px, #0e0e12 2px, #0e0e12 4px),
       repeating-linear-gradient(-45deg, #16161b 0, #16161b 2px, #0e0e12 2px, #0e0e12 4px);
     background-size:6px 6px;
     opacity:.55;
+    z-index:0;
   }
 
   /* ===== 3D receding track ===== */
   .track-stage{
-    position:absolute;
+    position:fixed;
     left:0; right:0; bottom:0;
     height:60%;
     perspective:300px;
@@ -85,7 +86,7 @@
 
   /* ===== glow accents ===== */
   .glow{
-    position:absolute;
+    position:fixed;
     border-radius:50%;
     filter:blur(90px);
     z-index:0;
@@ -102,7 +103,7 @@
   }
 
   /* ===== speed streaks ===== */
-  .streaks{ position:absolute; inset:0; z-index:1; overflow:hidden; pointer-events:none; }
+  .streaks{ position:fixed; inset:0; z-index:1; overflow:hidden; pointer-events:none; }
   .streak{
     position:absolute;
     height:2px;
@@ -116,17 +117,59 @@
     to{ transform:translateX(260vw); }
   }
 
+  /* ===== top banner: logo + college/dept ===== */
+  .topbar{
+    position:relative;
+    z-index:6;
+    width:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:14px;
+    padding:16px 16px 10px;
+    text-align:left;
+  }
+  .topbar img{
+    width:clamp(38px,8vw,52px);
+    height:clamp(38px,8vw,52px);
+    object-fit:contain;
+    border-radius:6px;
+    background:rgba(255,255,255,.04);
+    flex-shrink:0;
+  }
+  .topbar .brandtext{
+    display:flex;
+    flex-direction:column;
+    line-height:1.25;
+  }
+  .topbar .college{
+    font-family:'Orbitron',sans-serif;
+    font-size:clamp(11px,2.6vw,15px);
+    font-weight:700;
+    letter-spacing:.04em;
+    color:var(--chrome);
+    text-transform:uppercase;
+  }
+  .topbar .dept{
+    font-size:clamp(10px,2.3vw,13px);
+    font-weight:600;
+    letter-spacing:.08em;
+    color:var(--chrome-dim);
+    text-transform:uppercase;
+  }
+
   /* ===== content ===== */
   .stage{
     position:relative;
     z-index:5;
     width:100%;
     max-width:1000px;
-    padding:6vh 20px;
+    padding:2vh 20px 6vh;
     display:flex;
     flex-direction:column;
     align-items:center;
     text-align:center;
+    flex:1;
   }
 
   /* eyebrow tag */
@@ -144,7 +187,7 @@
     color:var(--chrome);
     background:rgba(255,255,255,.03);
     text-transform:uppercase;
-    margin-bottom:clamp(20px,4vh,36px);
+    margin-bottom:clamp(20px,4vh,32px);
   }
   .tag::before{
     content:"";
@@ -159,30 +202,11 @@
     50%{ opacity:.4; transform:scale(.7); }
   }
 
-  /* start lights */
-  .lights{
-    display:flex;
-    gap:clamp(8px,2vw,16px);
-    margin-bottom:clamp(20px,4vh,34px);
-  }
-  .lights span{
-    width:clamp(14px,3.2vw,22px);
-    height:clamp(14px,3.2vw,22px);
-    border-radius:50%;
-    background:#3a0705;
-    box-shadow:inset 0 0 6px rgba(0,0,0,.6);
-    transition:background .1s, box-shadow .1s;
-  }
-  .lights span.on{
-    background:var(--race-red-glow);
-    box-shadow:0 0 18px 4px var(--race-red-glow), inset 0 0 6px rgba(255,255,255,.4);
-  }
-
   /* title */
   h1{
     font-family:'Orbitron',sans-serif;
     font-weight:900;
-    font-size:clamp(48px,15vw,150px);
+    font-size:clamp(44px,14vw,140px);
     line-height:.95;
     letter-spacing:.01em;
     font-style:italic;
@@ -204,7 +228,7 @@
     display:flex;
     align-items:center;
     gap:clamp(10px,2.5vw,20px);
-    margin-top:clamp(14px,3vh,26px);
+    margin-top:clamp(14px,3vh,24px);
   }
   .subtitle-row .rule{
     width:clamp(24px,6vw,60px);
@@ -217,7 +241,7 @@
   h2{
     font-family:'Orbitron',sans-serif;
     font-weight:700;
-    font-size:clamp(16px,4.6vw,32px);
+    font-size:clamp(15px,4.4vw,30px);
     letter-spacing:.5em;
     text-indent:.5em;
     color:var(--caution-yellow);
@@ -235,7 +259,7 @@
   @keyframes blink{ 50%{ opacity:0; } }
 
   p.desc{
-    margin-top:clamp(20px,4vh,30px);
+    margin-top:clamp(18px,3.5vh,26px);
     max-width:560px;
     font-size:clamp(14px,3vw,18px);
     font-weight:500;
@@ -245,31 +269,141 @@
   }
   p.desc strong{ color:var(--chrome); font-weight:700; }
 
-  footer{
-    position:absolute;
-    bottom:18px;
-    left:0; right:0;
-    z-index:6;
+  /* ===== game panel ===== */
+  .game-panel{
+    margin-top:clamp(30px,5vh,46px);
+    width:100%;
+    max-width:440px;
+    background:var(--panel);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    border:1px solid rgba(216,217,219,.18);
+    border-radius:10px;
+    padding:clamp(18px,4vw,28px) clamp(16px,4vw,26px) clamp(22px,4vw,28px);
+  }
+  .game-title{
+    font-family:'Orbitron',sans-serif;
+    font-size:clamp(12px,3vw,15px);
+    font-weight:700;
+    letter-spacing:.25em;
+    color:var(--chrome);
+    text-transform:uppercase;
+    margin-bottom:4px;
+  }
+  .game-sub{
+    font-size:clamp(11px,2.6vw,13px);
+    color:var(--chrome-dim);
+    letter-spacing:.05em;
+    margin-bottom:clamp(16px,3vh,20px);
+  }
+
+  .lights{
     display:flex;
     justify-content:center;
-    gap:14px;
+    gap:clamp(8px,2.4vw,16px);
+    margin-bottom:clamp(16px,3vh,22px);
+  }
+  .lights span{
+    width:clamp(16px,5vw,26px);
+    height:clamp(16px,5vw,26px);
+    border-radius:50%;
+    background:#3a0705;
+    box-shadow:inset 0 0 6px rgba(0,0,0,.6);
+    transition:background .08s, box-shadow .08s;
+  }
+  .lights span.on{
+    background:var(--race-red-glow);
+    box-shadow:0 0 18px 4px var(--race-red-glow), inset 0 0 6px rgba(255,255,255,.4);
+  }
+
+  #gameBtn{
+    display:block;
+    width:100%;
+    padding:clamp(14px,3.4vw,18px) 20px;
+    font-family:'Orbitron',sans-serif;
+    font-size:clamp(13px,3.2vw,17px);
+    font-weight:800;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:#fff;
+    background:linear-gradient(180deg,var(--race-red-glow),var(--race-red));
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+    box-shadow:0 6px 0 #7a0400, 0 8px 20px rgba(225,6,0,.35);
+    transition:transform .08s, box-shadow .08s, background .2s;
+    -webkit-tap-highlight-color:transparent;
+  }
+  #gameBtn:active{
+    transform:translateY(4px);
+    box-shadow:0 2px 0 #7a0400, 0 4px 10px rgba(225,6,0,.35);
+  }
+  #gameBtn.waiting{
+    background:linear-gradient(180deg,#2a2a30,#1c1c22);
+    box-shadow:0 6px 0 #0a0a0d, 0 8px 20px rgba(0,0,0,.35);
+  }
+  #gameBtn.go{
+    background:linear-gradient(180deg,#3ddc84,#1fae5f);
+    box-shadow:0 6px 0 #0f6b3a, 0 8px 24px rgba(61,220,132,.4);
+  }
+  #gameBtn.false-start{
+    background:linear-gradient(180deg,var(--caution-yellow),#c9a800);
+    box-shadow:0 6px 0 #8a7300, 0 8px 20px rgba(255,212,0,.35);
+    color:#1a1a1a;
+  }
+
+  .game-result{
+    margin-top:clamp(14px,3vh,18px);
+    min-height:1.4em;
+    font-family:'Orbitron',sans-serif;
+    font-size:clamp(12px,3vw,15px);
+    font-weight:700;
+    letter-spacing:.08em;
+    color:var(--chrome);
+  }
+  .game-result .time{ color:var(--caution-yellow); }
+  .game-best{
+    margin-top:6px;
+    font-size:clamp(10px,2.5vw,12px);
+    letter-spacing:.15em;
+    color:var(--chrome-dim);
+    text-transform:uppercase;
+  }
+  .game-best strong{ color:var(--chrome); }
+
+  footer{
+    position:relative;
+    z-index:6;
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:6px;
     font-family:'Rajdhani',sans-serif;
-    font-size:clamp(10px,2.6vw,13px);
-    font-weight:600;
-    letter-spacing:.25em;
+    letter-spacing:.2em;
     color:rgba(216,217,219,.45);
     text-transform:uppercase;
-    padding:0 16px;
+    padding:18px 16px 22px;
     text-align:center;
   }
-  footer .dot{ color:var(--race-red); }
+  footer .line1{
+    font-size:clamp(10px,2.6vw,13px);
+    font-weight:600;
+  }
+  footer .line1 .dot{ color:var(--race-red); margin:0 8px; }
+  footer .line2{
+    font-size:clamp(9px,2.2vw,11px);
+    font-weight:500;
+    color:rgba(216,217,219,.3);
+    letter-spacing:.1em;
+  }
 
   /* checkered strips */
   .checker{
-    position:absolute;
+    position:fixed;
     left:0; right:0;
     height:10px;
-    z-index:6;
+    z-index:7;
     background-image:
       linear-gradient(45deg, #101014 25%, transparent 25%, transparent 75%, #101014 75%),
       linear-gradient(45deg, #101014 25%, transparent 25%, transparent 75%, #101014 75%);
@@ -282,9 +416,10 @@
 
   @media (max-width:600px){
     h1{ letter-spacing:0; }
-    h2{ letter-spacing:.35em; text-indent:.35em; }
+    h2{ letter-spacing:.3em; text-indent:.3em; }
     .lights span{ box-shadow:none; }
     .streak{ display:none; }
+    .topbar{ padding-top:20px; }
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -308,12 +443,16 @@
   <div class="checker top"></div>
   <div class="checker bottom"></div>
 
+  <div class="topbar">
+    <img src="spartanz-logo.jpg" alt="Spartanz Logo" onerror="this.style.display='none'">
+    <div class="brandtext">
+      <span class="college">New Prince Shri Bhavani College of Engineering and Technology</span>
+      <span class="dept">Dept. of Computer Science &amp; Engineering (Cyber Security)</span>
+    </div>
+  </div>
+
   <main class="stage">
     <div class="tag">Dept. Symposium &nbsp;·&nbsp; Grid Locked</div>
-
-    <div class="lights" id="lights">
-      <span></span><span></span><span></span><span></span><span></span>
-    </div>
 
     <h1>SPARTANZ&nbsp;3<span class="accent">.O</span></h1>
 
@@ -324,10 +463,22 @@
     </div>
 
     <p class="desc">Engines are warming on the grid. <strong>SPARTANZ 3.O</strong> is fuelling up for lights‑out — the department's flagship symposium returns for its third lap.</p>
+
+    <section class="game-panel">
+      <div class="game-title">Reaction Test</div>
+      <div class="game-sub">Hit the button the instant the lights go out. Jump the start and you're penalised.</div>
+      <div class="lights" id="lights">
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <button id="gameBtn">Start Engine</button>
+      <div class="game-result" id="gameResult"></div>
+      <div class="game-best" id="gameBest"></div>
+    </section>
   </main>
 
   <footer>
-    <span>Formula&nbsp;Series</span><span class="dot">●</span><span>Season&nbsp;03</span><span class="dot">●</span><span>Lights&nbsp;Out&nbsp;Soon</span>
+    <div class="line1"><span>Formula&nbsp;Series</span><span class="dot">●</span><span>Season&nbsp;03</span><span class="dot">●</span><span>Lights&nbsp;Out&nbsp;Soon</span></div>
+    <div class="line2">New Prince Shri Bhavani College of Engineering and Technology &nbsp;·&nbsp; CSE (Cyber Security)</div>
   </footer>
 
 <script>
@@ -344,30 +495,107 @@
     streaksEl.appendChild(s);
   }
 
-  // F1 start-light sequence: 5 lights on in sequence, hold, then all-out ("lights out, and away we go")
+  // ===== Reaction test mini-game (F1 start-lights) =====
   const lightNodes = document.querySelectorAll('#lights span');
-  let step = 0;
-  const ON_DELAY = 550;
-  const HOLD = 900;
-  const OFF_HOLD = 1400;
+  const btn = document.getElementById('gameBtn');
+  const resultEl = document.getElementById('gameResult');
+  const bestEl = document.getElementById('gameBest');
 
-  function runSequence(){
-    lightNodes.forEach(n => n.classList.remove('on'));
-    step = 0;
-    const interval = setInterval(() => {
-      if(step < lightNodes.length){
-        lightNodes[step].classList.add('on');
-        step++;
-      } else {
-        clearInterval(interval);
-        setTimeout(() => {
-          lightNodes.forEach(n => n.classList.remove('on'));
-          setTimeout(runSequence, OFF_HOLD);
-        }, HOLD);
-      }
-    }, ON_DELAY);
+  const STATE = { IDLE:'idle', ARMING:'arming', WAITING:'waiting', GO:'go' };
+  let state = STATE.IDLE;
+  let goTimestamp = 0;
+  let timers = [];
+
+  function clearTimers(){ timers.forEach(t => clearTimeout(t)); timers = []; }
+  function lightsOff(){ lightNodes.forEach(n => n.classList.remove('on')); }
+
+  function getBest(){
+    try{
+      const v = localStorage.getItem('spartanz_best_reaction');
+      return v ? parseInt(v,10) : null;
+    }catch(e){ return null; }
   }
-  runSequence();
+  function setBest(ms){
+    try{ localStorage.setItem('spartanz_best_reaction', ms); }catch(e){}
+  }
+  function renderBest(){
+    const b = getBest();
+    bestEl.textContent = b ? 'Best: ' + b + ' ms' : '';
+  }
+  renderBest();
+
+  function rank(ms){
+    if(ms < 150) return "That's not human — false-start territory ⚠";
+    if(ms < 220) return "World Champion reflexes 🏆";
+    if(ms < 300) return "Podium pace! 🥇";
+    if(ms < 420) return "Solid points finish 👍";
+    return "Backmarker... try again 🔧";
+  }
+
+  function startSequence(){
+    clearTimers();
+    lightsOff();
+    resultEl.textContent = '';
+    resultEl.classList.remove('time');
+    btn.classList.remove('go','false-start');
+    btn.classList.add('waiting');
+    btn.textContent = 'Hold on...';
+    state = STATE.ARMING;
+
+    // light up sequentially
+    lightNodes.forEach((node, i) => {
+      timers.push(setTimeout(() => { node.classList.add('on'); }, (i+1) * 550));
+    });
+
+    const allOnDelay = (lightNodes.length + 1) * 550;
+    const randomHold = 1000 + Math.random() * 2200;
+
+    timers.push(setTimeout(() => {
+      state = STATE.WAITING;
+    }, allOnDelay));
+
+    timers.push(setTimeout(() => {
+      lightsOff();
+      state = STATE.GO;
+      goTimestamp = performance.now();
+      btn.classList.remove('waiting');
+      btn.classList.add('go');
+      btn.textContent = 'GO!!';
+    }, allOnDelay + randomHold));
+  }
+
+  function handleFalseStart(){
+    clearTimers();
+    lightsOff();
+    state = STATE.IDLE;
+    btn.classList.remove('waiting','go');
+    btn.classList.add('false-start');
+    btn.textContent = 'Jump Start — Retry';
+    resultEl.innerHTML = 'False start! Wait for the lights to go out ⚠';
+    setTimeout(() => { btn.classList.remove('false-start'); btn.textContent = 'Start Engine'; }, 1600);
+  }
+
+  function handleGoClick(){
+    const reaction = Math.round(performance.now() - goTimestamp);
+    state = STATE.IDLE;
+    btn.classList.remove('go');
+    btn.textContent = 'Try Again';
+    resultEl.innerHTML = 'Reaction: <span class="time">' + reaction + ' ms</span> — ' + rank(reaction);
+
+    const best = getBest();
+    if(!best || reaction < best){ setBest(reaction); }
+    renderBest();
+  }
+
+  btn.addEventListener('click', () => {
+    if(state === STATE.IDLE){
+      startSequence();
+    } else if(state === STATE.ARMING || state === STATE.WAITING){
+      handleFalseStart();
+    } else if(state === STATE.GO){
+      handleGoClick();
+    }
+  });
 </script>
 </body>
 </html>
