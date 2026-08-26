@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>SPARTANZ 3.O — Coming Soon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --tarmac:#0a0a0d;
+    --tarmac-2:#111116;
+    --carbon:#1c1c22;
+    --race-red:#e10600;
+    --race-red-glow:#ff2a1f;
+    --caution-yellow:#ffd400;
+    --chrome:#d8d9db;
+    --chrome-dim:#8a8b90;
+    --line-white:#f2f2f0;
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  html,body{
+    width:100%; height:100%;
+    background:var(--tarmac);
+    overflow:hidden;
+    font-family:'Rajdhani',sans-serif;
+  }
+
+  body{
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:100svh;
+  }
+
+  /* ===== carbon fiber base ===== */
+  .carbon{
+    position:absolute; inset:0;
+    background-image:
+      repeating-linear-gradient(45deg, #16161b 0, #16161b 2px, #0e0e12 2px, #0e0e12 4px),
+      repeating-linear-gradient(-45deg, #16161b 0, #16161b 2px, #0e0e12 2px, #0e0e12 4px);
+    background-size:6px 6px;
+    opacity:.55;
+  }
+
+  /* ===== 3D receding track ===== */
+  .track-stage{
+    position:absolute;
+    left:0; right:0; bottom:0;
+    height:60%;
+    perspective:300px;
+    perspective-origin:50% 0%;
+    overflow:hidden;
+    z-index:1;
+  }
+  .track-floor{
+    position:absolute;
+    left:50%; bottom:0;
+    width:220%;
+    height:200%;
+    margin-left:-110%;
+    transform:rotateX(72deg);
+    transform-origin:bottom center;
+    background:
+      repeating-linear-gradient(90deg, transparent 0 46%, var(--line-white) 46% 47.5%, transparent 47.5% 52.5%, var(--line-white) 52.5% 54%, transparent 54% 100%),
+      repeating-linear-gradient(0deg, rgba(255,255,255,.10) 0 3%, transparent 3% 14%),
+      linear-gradient(#141418,#141418);
+    background-size:100% 100%, 100% 160px, 100% 100%;
+    animation:track-move 1.1s linear infinite;
+    opacity:.9;
+  }
+  @keyframes track-move{
+    from{ background-position:0 0, 0 0, 0 0; }
+    to{ background-position:0 0, 0 160px, 0 0; }
+  }
+  .track-fade{
+    position:absolute; inset:0;
+    background:linear-gradient(to top, var(--tarmac) 0%, rgba(10,10,13,0) 55%);
+    z-index:2;
+  }
+
+  /* ===== glow accents ===== */
+  .glow{
+    position:absolute;
+    border-radius:50%;
+    filter:blur(90px);
+    z-index:0;
+  }
+  .glow-red{
+    width:60vw; height:60vw; max-width:700px; max-height:700px;
+    background:radial-gradient(circle, rgba(225,6,0,.35), transparent 70%);
+    top:-10%; left:50%; transform:translateX(-50%);
+  }
+  .glow-yellow{
+    width:40vw; height:40vw; max-width:420px; max-height:420px;
+    background:radial-gradient(circle, rgba(255,212,0,.12), transparent 70%);
+    bottom:0; left:10%;
+  }
+
+  /* ===== speed streaks ===== */
+  .streaks{ position:absolute; inset:0; z-index:1; overflow:hidden; pointer-events:none; }
+  .streak{
+    position:absolute;
+    height:2px;
+    width:40%;
+    left:-50%;
+    background:linear-gradient(90deg, transparent, rgba(216,217,219,.55), transparent);
+    animation:streak-run linear infinite;
+  }
+  @keyframes streak-run{
+    from{ transform:translateX(0); }
+    to{ transform:translateX(260vw); }
+  }
+
+  /* ===== content ===== */
+  .stage{
+    position:relative;
+    z-index:5;
+    width:100%;
+    max-width:1000px;
+    padding:6vh 20px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+  }
+
+  /* eyebrow tag */
+  .tag{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    padding:6px 18px;
+    border:1px solid rgba(216,217,219,.35);
+    border-radius:2px;
+    font-family:'Orbitron',sans-serif;
+    font-size:clamp(10px,2.4vw,13px);
+    font-weight:700;
+    letter-spacing:.35em;
+    color:var(--chrome);
+    background:rgba(255,255,255,.03);
+    text-transform:uppercase;
+    margin-bottom:clamp(20px,4vh,36px);
+  }
+  .tag::before{
+    content:"";
+    width:8px; height:8px;
+    background:var(--race-red);
+    border-radius:50%;
+    box-shadow:0 0 10px 2px var(--race-red-glow);
+    animation:pulse 1.4s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%,100%{ opacity:1; transform:scale(1); }
+    50%{ opacity:.4; transform:scale(.7); }
+  }
+
+  /* start lights */
+  .lights{
+    display:flex;
+    gap:clamp(8px,2vw,16px);
+    margin-bottom:clamp(20px,4vh,34px);
+  }
+  .lights span{
+    width:clamp(14px,3.2vw,22px);
+    height:clamp(14px,3.2vw,22px);
+    border-radius:50%;
+    background:#3a0705;
+    box-shadow:inset 0 0 6px rgba(0,0,0,.6);
+    transition:background .1s, box-shadow .1s;
+  }
+  .lights span.on{
+    background:var(--race-red-glow);
+    box-shadow:0 0 18px 4px var(--race-red-glow), inset 0 0 6px rgba(255,255,255,.4);
+  }
+
+  /* title */
+  h1{
+    font-family:'Orbitron',sans-serif;
+    font-weight:900;
+    font-size:clamp(48px,15vw,150px);
+    line-height:.95;
+    letter-spacing:.01em;
+    font-style:italic;
+    background:linear-gradient(180deg,#ffffff 0%,var(--chrome) 45%,#6f7075 55%,var(--chrome) 65%,#ffffff 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+    text-shadow:0 0 60px rgba(225,6,0,.25);
+    position:relative;
+    white-space:nowrap;
+  }
+  h1 span.accent{
+    color:var(--race-red);
+    -webkit-text-fill-color:var(--race-red);
+    text-shadow:0 0 30px var(--race-red-glow), 0 0 70px rgba(225,6,0,.6);
+  }
+
+  .subtitle-row{
+    display:flex;
+    align-items:center;
+    gap:clamp(10px,2.5vw,20px);
+    margin-top:clamp(14px,3vh,26px);
+  }
+  .subtitle-row .rule{
+    width:clamp(24px,6vw,60px);
+    height:2px;
+    background:linear-gradient(90deg,transparent,var(--chrome-dim));
+  }
+  .subtitle-row .rule.r{
+    background:linear-gradient(90deg,var(--chrome-dim),transparent);
+  }
+  h2{
+    font-family:'Orbitron',sans-serif;
+    font-weight:700;
+    font-size:clamp(16px,4.6vw,32px);
+    letter-spacing:.5em;
+    text-indent:.5em;
+    color:var(--caution-yellow);
+    text-transform:uppercase;
+  }
+  .cursor{
+    display:inline-block;
+    width:.09em;
+    height:.85em;
+    background:var(--caution-yellow);
+    margin-left:6px;
+    vertical-align:-2px;
+    animation:blink 1s steps(1) infinite;
+  }
+  @keyframes blink{ 50%{ opacity:0; } }
+
+  p.desc{
+    margin-top:clamp(20px,4vh,30px);
+    max-width:560px;
+    font-size:clamp(14px,3vw,18px);
+    font-weight:500;
+    letter-spacing:.03em;
+    color:var(--chrome-dim);
+    line-height:1.6;
+  }
+  p.desc strong{ color:var(--chrome); font-weight:700; }
+
+  footer{
+    position:absolute;
+    bottom:18px;
+    left:0; right:0;
+    z-index:6;
+    display:flex;
+    justify-content:center;
+    gap:14px;
+    font-family:'Rajdhani',sans-serif;
+    font-size:clamp(10px,2.6vw,13px);
+    font-weight:600;
+    letter-spacing:.25em;
+    color:rgba(216,217,219,.45);
+    text-transform:uppercase;
+    padding:0 16px;
+    text-align:center;
+  }
+  footer .dot{ color:var(--race-red); }
+
+  /* checkered strips */
+  .checker{
+    position:absolute;
+    left:0; right:0;
+    height:10px;
+    z-index:6;
+    background-image:
+      linear-gradient(45deg, #101014 25%, transparent 25%, transparent 75%, #101014 75%),
+      linear-gradient(45deg, #101014 25%, transparent 25%, transparent 75%, #101014 75%);
+    background-size:20px 20px;
+    background-position:0 0, 10px 10px;
+    background-color:var(--line-white);
+  }
+  .checker.top{ top:0; }
+  .checker.bottom{ bottom:0; }
+
+  @media (max-width:600px){
+    h1{ letter-spacing:0; }
+    h2{ letter-spacing:.35em; text-indent:.35em; }
+    .lights span{ box-shadow:none; }
+    .streak{ display:none; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="carbon"></div>
+  <div class="glow glow-red"></div>
+  <div class="glow glow-yellow"></div>
+
+  <div class="track-stage">
+    <div class="track-floor"></div>
+    <div class="track-fade"></div>
+  </div>
+
+  <div class="streaks" id="streaks"></div>
+
+  <div class="checker top"></div>
+  <div class="checker bottom"></div>
+
+  <main class="stage">
+    <div class="tag">Dept. Symposium &nbsp;·&nbsp; Grid Locked</div>
+
+    <div class="lights" id="lights">
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+
+    <h1>SPARTANZ&nbsp;3<span class="accent">.O</span></h1>
+
+    <div class="subtitle-row">
+      <span class="rule"></span>
+      <h2>Coming Soon<span class="cursor"></span></h2>
+      <span class="rule r"></span>
+    </div>
+
+    <p class="desc">Engines are warming on the grid. <strong>SPARTANZ 3.O</strong> is fuelling up for lights‑out — the department's flagship symposium returns for its third lap.</p>
+  </main>
+
+  <footer>
+    <span>Formula&nbsp;Series</span><span class="dot">●</span><span>Season&nbsp;03</span><span class="dot">●</span><span>Lights&nbsp;Out&nbsp;Soon</span>
+  </footer>
+
+<script>
+  // speed streaks - randomized generation
+  const streaksEl = document.getElementById('streaks');
+  const streakCount = window.innerWidth < 600 ? 0 : 10;
+  for(let i=0;i<streakCount;i++){
+    const s = document.createElement('div');
+    s.className = 'streak';
+    s.style.top = (Math.random()*100) + '%';
+    s.style.animationDuration = (1.2 + Math.random()*1.8) + 's';
+    s.style.animationDelay = (Math.random()*2) + 's';
+    s.style.opacity = (0.3 + Math.random()*0.5).toFixed(2);
+    streaksEl.appendChild(s);
+  }
+
+  // F1 start-light sequence: 5 lights on in sequence, hold, then all-out ("lights out, and away we go")
+  const lightNodes = document.querySelectorAll('#lights span');
+  let step = 0;
+  const ON_DELAY = 550;
+  const HOLD = 900;
+  const OFF_HOLD = 1400;
+
+  function runSequence(){
+    lightNodes.forEach(n => n.classList.remove('on'));
+    step = 0;
+    const interval = setInterval(() => {
+      if(step < lightNodes.length){
+        lightNodes[step].classList.add('on');
+        step++;
+      } else {
+        clearInterval(interval);
+        setTimeout(() => {
+          lightNodes.forEach(n => n.classList.remove('on'));
+          setTimeout(runSequence, OFF_HOLD);
+        }, HOLD);
+      }
+    }, ON_DELAY);
+  }
+  runSequence();
+</script>
+</body>
+</html>
