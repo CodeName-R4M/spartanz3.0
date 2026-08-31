@@ -1,0 +1,11 @@
+﻿User-agent: *
+Allow: /
+
+# Internal diagnostics — restricted access
+Disallow: /telemetry
+Disallow: /telemetry/
+
+# Crawl-delay for bots
+Crawl-delay: 10
+
+Sitemap: https://spartanz.in.net/sitemap.xml
