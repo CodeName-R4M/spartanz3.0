@@ -1,13 +1,13 @@
-1:HL["/_next/static/css/2ba4819f97b41f6a.css","style"]
-0:["AAED6qzdWTSfsdDy2Hf9N",[[["",{"children":["__PAGE__",{}]},"$undefined","$undefined",true],"$L2",[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/2ba4819f97b41f6a.css","precedence":"next"}]],"$L3"]]]]
-5:I{"id":5806,"chunks":["849:static/chunks/849-051539e39f43d631.js","985:static/chunks/985-5227027dfdfa8c61.js","683:static/chunks/683-81400873f53ee6a0.js","861:static/chunks/861-01a23f9a17019bcb.js","185:static/chunks/app/layout-28f65f3d94980fd4.js"],"name":"AuthProvider","async":false}
-6:I{"id":7369,"chunks":["849:static/chunks/849-051539e39f43d631.js","985:static/chunks/985-5227027dfdfa8c61.js","683:static/chunks/683-81400873f53ee6a0.js","861:static/chunks/861-01a23f9a17019bcb.js","185:static/chunks/app/layout-28f65f3d94980fd4.js"],"name":"SettingsProvider","async":false}
-7:I{"id":6336,"chunks":["849:static/chunks/849-051539e39f43d631.js","985:static/chunks/985-5227027dfdfa8c61.js","683:static/chunks/683-81400873f53ee6a0.js","861:static/chunks/861-01a23f9a17019bcb.js","185:static/chunks/app/layout-28f65f3d94980fd4.js"],"name":"Navbar","async":false}
-8:I{"id":1443,"chunks":["272:static/chunks/webpack-6761570df2ebdbec.js","971:static/chunks/fd9d1056-7a9b8bd7db2c66f9.js","864:static/chunks/864-25394ad0c99034f6.js"],"name":"","async":false}
-9:I{"id":8639,"chunks":["272:static/chunks/webpack-6761570df2ebdbec.js","971:static/chunks/fd9d1056-7a9b8bd7db2c66f9.js","864:static/chunks/864-25394ad0c99034f6.js"],"name":"","async":false}
-b:I{"id":5146,"chunks":["272:static/chunks/webpack-6761570df2ebdbec.js","971:static/chunks/fd9d1056-7a9b8bd7db2c66f9.js","864:static/chunks/864-25394ad0c99034f6.js"],"name":"","async":false}
-c:I{"id":3097,"chunks":["849:static/chunks/849-051539e39f43d631.js","985:static/chunks/985-5227027dfdfa8c61.js","683:static/chunks/683-81400873f53ee6a0.js","861:static/chunks/861-01a23f9a17019bcb.js","499:static/chunks/499-2bd3e808a3070e38.js","931:static/chunks/app/page-5720df42b64a6fea.js"],"name":"","async":false}
-d:I{"id":3944,"chunks":["849:static/chunks/849-051539e39f43d631.js","985:static/chunks/985-5227027dfdfa8c61.js","683:static/chunks/683-81400873f53ee6a0.js","861:static/chunks/861-01a23f9a17019bcb.js","185:static/chunks/app/layout-28f65f3d94980fd4.js"],"name":"Footer","async":false}
+1:HL["/_next/static/css/c90b0cb3cb88e14a.css","style"]
+0:["wfr6mAchlH2BBSC9z_mAW",[[["",{"children":["__PAGE__",{}]},"$undefined","$undefined",true],"$L2",[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/c90b0cb3cb88e14a.css","precedence":"next"}]],"$L3"]]]]
+5:I{"id":5806,"chunks":["849:static/chunks/849-051539e39f43d631.js","985:static/chunks/985-5227027dfdfa8c61.js","683:static/chunks/683-81400873f53ee6a0.js","861:static/chunks/861-01a23f9a17019bcb.js","185:static/chunks/app/layout-b55eac7dcf19f8ab.js"],"name":"AuthProvider","async":false}
+6:I{"id":7369,"chunks":["849:static/chunks/849-051539e39f43d631.js","985:static/chunks/985-5227027dfdfa8c61.js","683:static/chunks/683-81400873f53ee6a0.js","861:static/chunks/861-01a23f9a17019bcb.js","185:static/chunks/app/layout-b55eac7dcf19f8ab.js"],"name":"SettingsProvider","async":false}
+7:I{"id":6336,"chunks":["849:static/chunks/849-051539e39f43d631.js","985:static/chunks/985-5227027dfdfa8c61.js","683:static/chunks/683-81400873f53ee6a0.js","861:static/chunks/861-01a23f9a17019bcb.js","185:static/chunks/app/layout-b55eac7dcf19f8ab.js"],"name":"Navbar","async":false}
+8:I{"id":1443,"chunks":["272:static/chunks/webpack-f486c1388e4dca3b.js","971:static/chunks/fd9d1056-7a9b8bd7db2c66f9.js","864:static/chunks/864-25394ad0c99034f6.js"],"name":"","async":false}
+9:I{"id":8639,"chunks":["272:static/chunks/webpack-f486c1388e4dca3b.js","971:static/chunks/fd9d1056-7a9b8bd7db2c66f9.js","864:static/chunks/864-25394ad0c99034f6.js"],"name":"","async":false}
+b:I{"id":5146,"chunks":["272:static/chunks/webpack-f486c1388e4dca3b.js","971:static/chunks/fd9d1056-7a9b8bd7db2c66f9.js","864:static/chunks/864-25394ad0c99034f6.js"],"name":"","async":false}
+c:I{"id":3097,"chunks":["849:static/chunks/849-051539e39f43d631.js","985:static/chunks/985-5227027dfdfa8c61.js","683:static/chunks/683-81400873f53ee6a0.js","861:static/chunks/861-01a23f9a17019bcb.js","499:static/chunks/499-d88fd7b9af4bb784.js","931:static/chunks/app/page-8439b93b9a44e3d1.js"],"name":"","async":false}
+d:I{"id":3944,"chunks":["849:static/chunks/849-051539e39f43d631.js","985:static/chunks/985-5227027dfdfa8c61.js","683:static/chunks/683-81400873f53ee6a0.js","861:static/chunks/861-01a23f9a17019bcb.js","185:static/chunks/app/layout-b55eac7dcf19f8ab.js"],"name":"Footer","async":false}
 4:T6b7,
             @keyframes init-tacho-sweep {
               0% { stroke-dashoffset: 280; }
