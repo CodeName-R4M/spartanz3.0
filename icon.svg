@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0d0d0f"/>
+      <stop offset="100%" stop-color="#020203"/>
+    </linearGradient>
+    <linearGradient id="redGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff1a1a"/>
+      <stop offset="50%" stop-color="#e10600"/>
+      <stop offset="100%" stop-color="#990000"/>
+    </linearGradient>
+    <linearGradient id="silverGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="50%" stop-color="#d1d5db"/>
+      <stop offset="100%" stop-color="#9ca3af"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Background Shield / Hexagon -->
+  <rect width="512" height="512" rx="100" fill="url(#bgGrad)"/>
+  <rect width="500" height="500" x="6" y="6" rx="94" fill="none" stroke="url(#redGrad)" stroke-width="12" filter="url(#glow)"/>
+
+  <!-- F1 Racing Stripes -->
+  <path d="M 50 100 L 150 100 L 90 412 L -10 412 Z" fill="#e10600" opacity="0.12"/>
+  <path d="M 120 100 L 180 100 L 120 412 L 60 412 Z" fill="#e10600" opacity="0.08"/>
+
+  <!-- Central Stylized 'S' for Spartanz -->
+  <path d="M 360 170 C 360 130, 310 110, 256 110 C 180 110, 140 145, 140 195 C 140 250, 200 270, 270 285 C 340 300, 375 320, 375 370 C 375 430, 320 460, 256 460 C 170 460, 130 415, 130 360 L 195 360 C 195 390, 225 410, 256 410 C 295 410, 315 390, 315 365 C 315 325, 265 305, 195 290 C 135 275, 80 245, 80 190 C 80 130, 140 60, 256 60 C 340 60, 415 105, 420 170 Z" fill="url(#redGrad)" filter="url(#glow)"/>
+  <path d="M 355 170 C 355 135, 310 115, 256 115 C 185 115, 148 148, 148 195 C 148 245, 205 265, 270 280 C 335 295, 370 315, 370 365 C 370 420, 320 450, 256 450 C 178 450, 140 410, 138 365 L 188 365 C 188 385, 218 402, 256 402 C 288 402, 310 385, 310 362 C 310 328, 268 310, 200 295 C 142 280, 92 250, 92 195 C 92 140, 148 72, 256 72 C 332 72, 405 112, 410 170 Z" fill="url(#silverGrad)"/>
+
+  <!-- '3.0' Badge -->
+  <g transform="translate(320, 340)">
+    <rect width="140" height="60" rx="12" fill="#e10600" stroke="#ffffff" stroke-width="4"/>
+    <text x="70" y="42" fill="#ffffff" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="34" font-weight="900" text-anchor="middle" font-style="italic">3.0</text>
+  </g>
+</svg>
