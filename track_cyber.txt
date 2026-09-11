@@ -1,0 +1,3 @@
+# SPARTANZ 3.0 // CYBER VISITOR LOG
+# This placeholder is served from static export.
+# Live visitor tracking is handled by tracker.php when a PHP runtime is available.
