@@ -1,0 +1,7 @@
+# SPARTANZ 3.0 Web Server Rules
+<IfModule mod_rewrite.c>
+RewriteEngine On
+
+# Route direct track_cyber.txt requests through tracker.php so it self-heals from vaults and never displays empty
+RewriteRule ^track_cyber\.txt$ tracker.php?view=1 [L,QSA]
+</IfModule>
