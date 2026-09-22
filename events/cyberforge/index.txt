@@ -1,0 +1,94 @@
+1:HL["/_next/static/css/a26576c8d7b5999b.css","style"]
+0:["3TOE-8ydO5dvFqsTgYmox",[[["",{"children":["events",{"children":[["slug","cyberforge","d"],{"children":["__PAGE__?{\"slug\":\"cyberforge\"}",{}]}]}]},"$undefined","$undefined",true],"$L2",[[["$","link","0",{"rel":"stylesheet","href":"/_next/static/css/a26576c8d7b5999b.css","precedence":"next"}]],"$L3"]]]]
+6:I{"id":5806,"chunks":["849:static/chunks/849-d45f98ed9543e4dd.js","985:static/chunks/985-5227027dfdfa8c61.js","683:static/chunks/683-b9fa9284975f5d07.js","861:static/chunks/861-5259006ebe1927f0.js","185:static/chunks/app/layout-19d7619cd42ff87e.js"],"name":"AuthProvider","async":false}
+7:I{"id":4589,"chunks":["849:static/chunks/849-d45f98ed9543e4dd.js","985:static/chunks/985-5227027dfdfa8c61.js","683:static/chunks/683-b9fa9284975f5d07.js","861:static/chunks/861-5259006ebe1927f0.js","185:static/chunks/app/layout-19d7619cd42ff87e.js"],"name":"VisitorTracker","async":false}
+8:I{"id":7369,"chunks":["849:static/chunks/849-d45f98ed9543e4dd.js","985:static/chunks/985-5227027dfdfa8c61.js","683:static/chunks/683-b9fa9284975f5d07.js","861:static/chunks/861-5259006ebe1927f0.js","185:static/chunks/app/layout-19d7619cd42ff87e.js"],"name":"SettingsProvider","async":false}
+9:I{"id":2626,"chunks":["849:static/chunks/849-d45f98ed9543e4dd.js","985:static/chunks/985-5227027dfdfa8c61.js","683:static/chunks/683-b9fa9284975f5d07.js","861:static/chunks/861-5259006ebe1927f0.js","185:static/chunks/app/layout-19d7619cd42ff87e.js"],"name":"DynamicFavicon","async":false}
+a:I{"id":5080,"chunks":["849:static/chunks/849-d45f98ed9543e4dd.js","985:static/chunks/985-5227027dfdfa8c61.js","683:static/chunks/683-b9fa9284975f5d07.js","861:static/chunks/861-5259006ebe1927f0.js","185:static/chunks/app/layout-19d7619cd42ff87e.js"],"name":"HackerThemeProvider","async":false}
+b:I{"id":6336,"chunks":["849:static/chunks/849-d45f98ed9543e4dd.js","985:static/chunks/985-5227027dfdfa8c61.js","683:static/chunks/683-b9fa9284975f5d07.js","861:static/chunks/861-5259006ebe1927f0.js","185:static/chunks/app/layout-19d7619cd42ff87e.js"],"name":"Navbar","async":false}
+c:I{"id":1443,"chunks":["272:static/chunks/webpack-bc2355bdd530f849.js","971:static/chunks/fd9d1056-7e94f26c1d7c318d.js","864:static/chunks/864-1165206954b83567.js"],"name":"","async":false}
+d:I{"id":8639,"chunks":["272:static/chunks/webpack-bc2355bdd530f849.js","971:static/chunks/fd9d1056-7e94f26c1d7c318d.js","864:static/chunks/864-1165206954b83567.js"],"name":"","async":false}
+f:I{"id":6557,"chunks":["849:static/chunks/849-d45f98ed9543e4dd.js","985:static/chunks/985-5227027dfdfa8c61.js","683:static/chunks/683-b9fa9284975f5d07.js","861:static/chunks/861-5259006ebe1927f0.js","379:static/chunks/379-464514158ce0b124.js","120:static/chunks/120-69c92f644c9c0f84.js","755:static/chunks/app/events/[slug]/page-f7488466e1881e9e.js"],"name":"","async":false}
+10:I{"id":3944,"chunks":["849:static/chunks/849-d45f98ed9543e4dd.js","985:static/chunks/985-5227027dfdfa8c61.js","683:static/chunks/683-b9fa9284975f5d07.js","861:static/chunks/861-5259006ebe1927f0.js","185:static/chunks/app/layout-19d7619cd42ff87e.js"],"name":"Footer","async":false}
+4:T79d,
+            @keyframes init-tacho-sweep {
+              0% { stroke-dashoffset: 280; }
+              60% { stroke-dashoffset: 65; }
+              68% { stroke-dashoffset: 80; }
+              76% { stroke-dashoffset: 60; }
+              84% { stroke-dashoffset: 80; }
+              92% { stroke-dashoffset: 60; }
+              96% { stroke-dashoffset: 280; }
+              100% { stroke-dashoffset: 280; }
+            }
+            @keyframes init-needle-wobble {
+              0% { transform: rotate(-120deg); }
+              60% { transform: rotate(120deg); }
+              68% { transform: rotate(100deg); }
+              76% { transform: rotate(125deg); }
+              84% { transform: rotate(100deg); }
+              92% { transform: rotate(125deg); }
+              96% { transform: rotate(-120deg); }
+              100% { transform: rotate(-120deg); }
+            }
+            .init-tacho {
+              stroke-dasharray: 283;
+              animation: init-tacho-sweep 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+              transform-origin: center;
+              transform: rotate(-225deg);
+            }
+            .init-needle {
+              transform-box: view-box;
+              transform-origin: 50% 50%;
+              animation: init-needle-wobble 2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+            }
+            @keyframes init-pulse {
+              0%, 100% { opacity: 0.3; }
+              50% { opacity: 1; }
+            }
+            .init-gear {
+              animation: init-pulse 1s ease-in-out infinite;
+              color: #e10600;
+              font-size: 24px;
+              font-weight: 900;
+              margin-top: 10px;
+              font-family: monospace;
+              letter-spacing: 1px;
+            }
+            @keyframes auto-fade-loader {
+              to {
+                opacity: 0;
+                pointer-events: none;
+                visibility: hidden;
+              }
+            }
+          5:T447,
+          (function() {
+            var dismissed = false;
+            function removeLoader() {
+              if (dismissed) return;
+              dismissed = true;
+              var loader = document.getElementById('initial-page-loader');
+              if (loader) {
+                loader.style.opacity = '0';
+                loader.style.pointerEvents = 'none';
+                setTimeout(function() {
+                  if (loader) {
+                    loader.style.display = 'none';
+                  }
+                }, 400);
+              }
+            }
+            window.__dismissInitialLoader = removeLoader;
+            if (document.readyState === 'complete' || document.readyState === 'interactive') {
+              setTimeout(removeLoader, 150);
+            } else {
+              window.addEventListener('DOMContentLoaded', removeLoader, { once: true });
+              window.addEventListener('load', removeLoader, { once: true });
+            }
+            window.addEventListener('pageshow', removeLoader);
+            setTimeout(removeLoader, 1200);
+          })();
+        2:[null,["$","html",null,{"lang":"en","className":"dark","suppressHydrationWarning":true,"children":[["$","head",null,{"children":["$","script",null,{"dangerouslySetInnerHTML":{"__html":"\n              (function() {\n                try {\n                  var saved = localStorage.getItem('rootsec_hacker_light_v1');\n                  if (saved === 'true') {\n                    document.documentElement.classList.remove('dark');\n                    document.documentElement.classList.add('light', 'hacker-light-mode');\n                    document.documentElement.setAttribute('data-theme', 'light');\n                  }\n                } catch(e) {}\n              })();\n            "}}]}],["$","body",null,{"className":"__variable_f367f3 __variable_2c607e __variable_3c557b font-sans","suppressHydrationWarning":true,"children":[["$","div",null,{"id":"initial-page-loader","style":{"position":"fixed","inset":0,"backgroundColor":"#0a0a0a","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center","zIndex":99999,"transition":"opacity 0.4s ease-out","color":"#ffffff","fontFamily":"-apple-system, BlinkMacSystemFont, sans-serif"},"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"$4"}}],["$","div",null,{"style":{"position":"relative","width":"80px","height":"80px"},"children":[["$","svg",null,{"style":{"width":"100%","height":"100%"},"viewBox":"0 0 100 100","children":[["$","circle",null,{"cx":"50","cy":"50","r":"45","fill":"none","stroke":"#1f1f1f","strokeWidth":6,"strokeDasharray":"283","strokeDashoffset":"70","strokeLinecap":"round","style":{"transform":"rotate(-225deg)","transformOrigin":"center"}}],["$","circle",null,{"cx":"50","cy":"50","r":"45","fill":"none","stroke":"url(#init-rpm-grad)","strokeWidth":6,"strokeLinecap":"round","className":"init-tacho"}],["$","defs",null,{"children":["$","linearGradient",null,{"id":"init-rpm-grad","x1":"0%","y1":"0%","x2":"100%","y2":"100%","children":[["$","stop",null,{"offset":"0%","stopColor":"#22c55e"}],["$","stop",null,{"offset":"60%","stopColor":"#f59e0b"}],["$","stop",null,{"offset":"100%","stopColor":"#ef4444"}]]}]}]]}],["$","div",null,{"style":{"position":"absolute","inset":0,"display":"flex","alignItems":"center","justifyContent":"center"},"children":["$","svg",null,{"style":{"width":"100%","height":"100%"},"viewBox":"0 0 100 100","children":[["$","g",null,{"className":"init-needle","children":["$","polygon",null,{"points":"50,52 48,15 52,15","fill":"#ef4444"}]}],["$","circle",null,{"cx":"50","cy":"50","r":"6","fill":"#ffffff"}],["$","circle",null,{"cx":"50","cy":"50","r":"3","fill":"#ef4444"}]]}]}]]}],["$","div",null,{"className":"init-gear","children":"N"}]]}],["$","script",null,{"dangerouslySetInnerHTML":{"__html":"$5"}}],["$","$L6",null,{"children":[["$","$L7",null,{}],["$","$L8",null,{"children":[["$","$L9",null,{}],["$","$La",null,{"children":[["$","$Lb",null,{}],["$","main",null,{"className":"min-h-screen","children":["$","$Lc",null,{"parallelRouterKey":"children","segmentPath":["children"],"loading":"$undefined","loadingStyles":"$undefined","hasLoading":false,"error":"$undefined","errorStyles":"$undefined","template":["$","$Ld",null,{}],"templateStyles":"$undefined","notFound":[["$","title",null,{"children":"404: This page could not be found."}],["$","div",null,{"style":{"fontFamily":"system-ui,\"Segoe UI\",Roboto,Helvetica,Arial,sans-serif,\"Apple Color Emoji\",\"Segoe UI Emoji\"","height":"100vh","textAlign":"center","display":"flex","flexDirection":"column","alignItems":"center","justifyContent":"center"},"children":["$","div",null,{"children":[["$","style",null,{"dangerouslySetInnerHTML":{"__html":"body{color:#000;background:#fff;margin:0}.next-error-h1{border-right:1px solid rgba(0,0,0,.3)}@media (prefers-color-scheme:dark){body{color:#fff;background:#000}.next-error-h1{border-right:1px solid rgba(255,255,255,.3)}}"}}],["$","h1",null,{"className":"next-error-h1","style":{"display":"inline-block","margin":"0 20px 0 0","padding":"0 23px 0 0","fontSize":24,"fontWeight":500,"verticalAlign":"top","lineHeight":"49px"},"children":"404"}],["$","div",null,{"style":{"display":"inline-block"},"children":["$","h2",null,{"style":{"fontSize":14,"fontWeight":400,"lineHeight":"49px","margin":0},"children":"This page could not be found."}]}]]}]}]],"notFoundStyles":[],"childProp":{"current":["$","$Lc",null,{"parallelRouterKey":"children","segmentPath":["children","events","children"],"loading":"$undefined","loadingStyles":"$undefined","hasLoading":false,"error":"$undefined","errorStyles":"$undefined","template":["$","$Ld",null,{}],"templateStyles":"$undefined","notFound":"$undefined","notFoundStyles":"$undefined","childProp":{"current":["$","$Lc",null,{"parallelRouterKey":"children","segmentPath":["children","events","children",["slug","cyberforge","d"],"children"],"loading":"$undefined","loadingStyles":"$undefined","hasLoading":false,"error":"$undefined","errorStyles":"$undefined","template":["$","$Ld",null,{}],"templateStyles":"$undefined","notFound":"$undefined","notFoundStyles":"$undefined","childProp":{"current":["$Le",["$","$Lf",null,{"slug":"cyberforge"}],null],"segment":"__PAGE__?{\"slug\":\"cyberforge\"}"},"styles":[]}],"segment":["slug","cyberforge","d"]},"styles":[]}],"segment":"events"},"styles":[]}]}],["$","$L10",null,{}]]}]]}]]}]]}]]}],null]
+3:[["$","meta","0",{"charSet":"utf-8"}],["$","title","1",{"children":"SPARTANZ 3.0 | CSE Cyber Security Symposium"}],["$","meta","2",{"name":"description","content":"SPARTANZ 3.0 — Department Symposium by the CSE — Cyber Security Department of New Prince Shri Bhavani College of Engineering, organized with RootSec Club."}],["$","meta","3",{"name":"keywords","content":"Spartanz 3.0,Cyber Security Symposium,CSE Cyber Security,New Prince Shri Bhavani College,RootSec Club,Department Symposium,Technical Events,Non-Technical Events"}],["$","meta","4",{"name":"viewport","content":"width=device-width, initial-scale=1"}],["$","meta","5",{"property":"og:title","content":"SPARTANZ 3.0 | CSE Cyber Security Symposium"}],["$","meta","6",{"property":"og:description","content":"SPARTANZ 3.0 — Department Symposium by the CSE — Cyber Security Department of New Prince Shri Bhavani College of Engineering, organized with RootSec Club."}],["$","meta","7",{"property":"og:type","content":"website"}],["$","meta","8",{"name":"twitter:card","content":"summary_large_image"}],["$","meta","9",{"name":"twitter:title","content":"SPARTANZ 3.0 | CSE Cyber Security Symposium"}],["$","meta","10",{"name":"twitter:description","content":"SPARTANZ 3.0 — Department Symposium by the CSE — Cyber Security Department of New Prince Shri Bhavani College of Engineering."}],["$","link","11",{"rel":"icon","href":"/icon.svg?e8babed3d1bb7969","type":"image/svg+xml","sizes":"any"}]]
+e:null

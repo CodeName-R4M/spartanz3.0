@@ -1,7 +1,27 @@
-# SPARTANZ 3.0 Web Server Rules
+# SPARTANZ 3.0 Web Server Rules & 404 Router
 <IfModule mod_rewrite.c>
 RewriteEngine On
+RewriteBase /
 
-# Route direct track_cyber.txt requests through tracker.php so it self-heals from vaults and never displays empty
+# 1. Route direct track_cyber.txt requests through tracker.php
 RewriteRule ^track_cyber\.txt$ tracker.php?view=1 [L,QSA]
+
+# 2. If the exact file or directory exists, serve it directly
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# 3. If /path/index.html exists (e.g. Next.js export routes), serve it
+RewriteCond %{DOCUMENT_ROOT}/$1/index.html -f
+RewriteRule ^(.*)/?$ $1/index.html [L]
+
+# 4. If /path.html exists, serve it
+RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+RewriteRule ^(.*)$ $1.html [L]
+
+# 5. Route all other non-existent requests through our custom PHP 404 engine
+RewriteRule ^ 404.php [L,QSA]
 </IfModule>
+
+# 6. Fallback ErrorDocument for server-level 404 handling
+ErrorDocument 404 /404.php
